@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Crypto Portfolio</string>
+    <string name="settings">Settings</string>
+    <string name="history">History</string>
+    <string name="portfolio">Portfolio</string>
+
+    <string name="add_asset">Add asset</string>
+    <string name="no_assets">No assets added.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
