@@ -1,6 +1,6 @@
-package com.maksk993.cryptoportfolio.contract;
+package com.maksk993.cryptoportfolio.presentation.contract;
 
-import com.maksk993.cryptoportfolio.model.models.FindFragmentById;
+import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById;
 
 public interface MainContract {
     interface MainView {

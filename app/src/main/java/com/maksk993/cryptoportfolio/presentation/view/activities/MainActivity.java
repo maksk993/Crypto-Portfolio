@@ -1,7 +1,6 @@
-package com.maksk993.cryptoportfolio.view.activities;
+package com.maksk993.cryptoportfolio.presentation.view.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -11,18 +10,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.maksk993.cryptoportfolio.R;
-import com.maksk993.cryptoportfolio.contract.MainContract;
-import com.maksk993.cryptoportfolio.model.models.FindFragmentById;
-import com.maksk993.cryptoportfolio.presenter.MainPresenter;
-import com.maksk993.cryptoportfolio.view.fragments.*;
+import com.maksk993.cryptoportfolio.presentation.contract.MainContract;
+import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById;
+import com.maksk993.cryptoportfolio.presentation.presenter.MainPresenter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements MainContract.MainView {
     FragmentManager fragmentManager = getSupportFragmentManager();
-    Map<String, Fragment> fragmentMap = new HashMap<>();
     MainContract.MainPresenter presenter = new MainPresenter(this);
     BottomNavigationView bottomNavigationView;
 
@@ -30,15 +24,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
-
-        fragmentMap.put("History", new HistoryFragment());
-        fragmentMap.put("Portfolio", new PortfolioFragment());
-        fragmentMap.put("Settings", new SettingsFragment());
 
         bottomNavigationView = findViewById(R.id.bottom_nav_menu);
 
@@ -60,17 +45,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
 
     @Override
     public void startNewFragment(FindFragmentById id) {
-        Fragment fragment;
-        switch (id){
-            case HISTORY:
-                fragment = fragmentMap.get("History");
-                break;
-            case PORTFOLIO:
-                fragment = fragmentMap.get("Portfolio");
-                break;
-            default:
-                fragment = fragmentMap.get("Settings");
-        }
+        Fragment fragment = FindFragmentById.getFragment(id);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.nav_host_fragment, fragment);
         transaction.commit();

@@ -4,28 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activities.MainActivity"
-    android:background="@color/background_color">
+    tools:context=".presentation.view.activities.MainActivity"
+    style="@style/background">
 
    <com.google.android.material.bottomnavigation.BottomNavigationView
        android:id="@+id/bottom_nav_menu"
        app:menu="@menu/bottom_nav_menu"
        android:layout_width="0dp"
        android:layout_height="wrap_content"
-       android:background="@color/first_color"
-       app:itemTextColor="@color/white"
+       style="@style/bottomNavigation"
        app:layout_constraintBottom_toBottomOf="parent"
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintEnd_toEndOf="parent"/>
-
-   <View
-       android:id="@+id/view"
-       android:layout_width="match_parent"
-       android:layout_height="2dp"
-       android:background="@color/second_color"
-       app:layout_constraintBottom_toTopOf="@id/bottom_nav_menu"
-       app:layout_constraintStart_toStartOf="@id/bottom_nav_menu"
-       tools:ignore="MissingConstraints" />
 
    <LinearLayout
        android:id="@+id/header"
@@ -34,7 +24,7 @@
        android:orientation="horizontal"
        android:gravity="center_vertical"
        tools:ignore="MissingConstraints"
-       android:background="@color/first_color"
+       style="@style/firstColor"
        app:layout_constraintHeight_percent="0.08">
 
       <View
@@ -47,12 +37,11 @@
           android:id="@+id/wallet_name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:background="@color/first_color"
           android:fontFamily="@font/sarabun_semibold"
-          android:text="Portfolio name"
+          android:text="Portfolio 1"
           android:gravity="center"
-          android:textColor="@color/white"
-          android:textSize="28sp"
+          style="@style/firstTextColor"
+          android:textSize="25sp"
           tools:ignore="MissingConstraints" />
 
       <View
@@ -70,15 +59,6 @@
 
    </LinearLayout>
 
-   <View
-       android:layout_width="match_parent"
-       android:layout_height="2dp"
-       android:background="@color/second_color"
-       app:layout_constraintTop_toBottomOf="@id/header"
-       app:layout_constraintStart_toStartOf="@id/header"
-       tools:ignore="MissingConstraints"
-       />
-
    <androidx.fragment.app.FragmentContainerView
        android:id="@+id/nav_host_fragment"
        android:name="androidx.navigation.fragment.NavHostFragment"
@@ -92,5 +72,23 @@
        app:layout_constraintVertical_bias="0.05"
        app:navGraph="@navigation/nav"
       />
+
+   <View
+       android:id="@+id/view"
+       android:layout_width="match_parent"
+       android:layout_height="1dp"
+       style="@style/secondColor"
+       app:layout_constraintBottom_toTopOf="@id/bottom_nav_menu"
+       app:layout_constraintStart_toStartOf="@id/bottom_nav_menu"
+       tools:ignore="MissingConstraints" />
+
+   <View
+       android:layout_width="match_parent"
+       android:layout_height="1dp"
+       style="@style/secondColor"
+       app:layout_constraintTop_toBottomOf="@id/header"
+       app:layout_constraintStart_toStartOf="@id/header"
+       tools:ignore="MissingConstraints"
+       />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

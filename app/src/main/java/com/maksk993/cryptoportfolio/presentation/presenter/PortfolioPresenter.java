@@ -1,7 +1,7 @@
-package com.maksk993.cryptoportfolio.presenter;
+package com.maksk993.cryptoportfolio.presentation.presenter;
 
-import com.maksk993.cryptoportfolio.contract.PortfolioContract;
-import com.maksk993.cryptoportfolio.model.models.FindFragmentById;
+import com.maksk993.cryptoportfolio.presentation.contract.PortfolioContract;
+import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById;
 
 import java.lang.ref.WeakReference;
 

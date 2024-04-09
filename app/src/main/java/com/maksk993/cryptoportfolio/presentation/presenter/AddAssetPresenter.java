@@ -1,14 +1,15 @@
-package com.maksk993.cryptoportfolio.presenter;
+package com.maksk993.cryptoportfolio.presentation.presenter;
 
-import com.maksk993.cryptoportfolio.contract.MainContract;
-import com.maksk993.cryptoportfolio.model.models.FindFragmentById;
+import com.maksk993.cryptoportfolio.presentation.contract.AddAssetContract;
+import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById;
 
 import java.lang.ref.WeakReference;
 
-public class MainPresenter implements MainContract.MainPresenter {
-    WeakReference<MainContract.MainView> view;
+public class AddAssetPresenter implements AddAssetContract.AddAssetPresenter {
 
-    public MainPresenter(MainContract.MainView view){
+    WeakReference<AddAssetContract.AddAssetView> view;
+
+    public AddAssetPresenter(AddAssetContract.AddAssetView view){
         this.view = new WeakReference<>(view);
     }
 

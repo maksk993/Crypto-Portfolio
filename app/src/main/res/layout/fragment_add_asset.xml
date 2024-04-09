@@ -7,7 +7,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.fragments.AddAssetFragment">
+    tools:context=".presentation.view.fragments.AddAssetFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline"
@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="32dp"
+        app:layout_constraintGuide_end="16dp"
         />
 
     <androidx.constraintlayout.widget.Guideline
@@ -38,13 +38,38 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="32dp"
+        app:layout_constraintGuide_end="16dp"
+        />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/sv_search_assets"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintTop_toTopOf="@id/top_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        android:background="@drawable/searchview_bg"
+        app:queryHint="@string/search_hint"
+        app:iconifiedByDefault="false"
+        tools:ignore="MissingConstraints"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sv_search_assets"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        tools:ignore="MissingConstraints"
         />
 
     <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="65dp"
         android:layout_height="65dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/round_button"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintBottom_toTopOf="@id/bottom_guideline"

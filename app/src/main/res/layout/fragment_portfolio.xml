@@ -7,7 +7,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.fragments.PortfolioFragment">
+    tools:context=".presentation.view.fragments.PortfolioFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline"
@@ -48,65 +48,45 @@
         app:layout_constraintStart_toEndOf="@id/start_guideline"
         app:layout_constraintEnd_toStartOf="@id/end_guideline"
         app:layout_constraintTop_toBottomOf="@id/top_guideline"
-        android:text="228.56$"
-        android:textColor="@color/white"
+        android:text="@string/empty_balance"
+        style="@style/firstTextColor"
         android:fontFamily="@font/sarabun_semibold"
-        android:textSize="50sp"
+        android:textSize="45sp"
         android:gravity="center"
         tools:ignore="MissingConstraints"/>
 
-    <LinearLayout
-        android:id="@+id/add_asset_layout"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btn_add_asset"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.6"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/tv_balance"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
         android:layout_marginTop="16dp"
-        android:background="@color/background_color"
-        tools:ignore="MissingConstraints">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
-
-        <Button
-            android:id="@+id/btn_add_asset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAllCaps="true"
-            android:text="@string/add_asset"
-            android:backgroundTint="@color/add_asset_color"
-            android:textColor="@color/white"
-            android:fontFamily="@font/sarabun_semibold"
-            android:textSize="15sp"
-            tools:ignore="MissingConstraints" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
-
-    </LinearLayout>
+        android:textAllCaps="true"
+        android:text="@string/add_asset"
+        android:background="@drawable/searchview_bg"
+        android:backgroundTint="@color/add_asset_color"
+        android:textColor="@color/white"
+        android:fontFamily="@font/sarabun_semibold"
+        android:textSize="15sp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/tv_no_assets"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/background_color"
         app:layout_constraintStart_toEndOf="@id/start_guideline"
         app:layout_constraintEnd_toStartOf="@id/end_guideline"
-        app:layout_constraintTop_toBottomOf="@id/add_asset_layout"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_asset"
         app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
         android:gravity="center"
         android:text="@string/no_assets"
         android:visibility="visible"
-        android:textColor="@color/second_color"
+        style="@style/secondTextColor"
         android:fontFamily="@font/sarabun_semibold"
-        android:textSize="20sp"
+        android:textSize="15sp"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

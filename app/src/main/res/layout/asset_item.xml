@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/searchview_bg"
+    android:gravity="center_vertical"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
+    >
+
+    <ImageView
+        android:id="@+id/img_asset_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_asset_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7"
+        android:gravity="center"
+        style="@style/firstTextColor"
+        android:textSize="22sp"
+        android:fontFamily="@font/sarabun_semibold"
+        android:text="NEAR"
+        />
+
+    <TextView
+        android:id="@+id/tv_asset_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:gravity="right"
+        android:layout_marginEnd="16dp"
+        style="@style/firstTextColor"
+        android:textSize="22sp"
+        android:fontFamily="@font/sarabun_semibold"
+        android:text="7.23 $"
+        />
+
+</LinearLayout>
