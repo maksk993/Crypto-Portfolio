@@ -1,6 +1,7 @@
 package com.maksk993.cryptoportfolio.domain.usecases;
 
 import com.maksk993.cryptoportfolio.domain.repository.CryptoRepository;
+import com.maksk993.cryptoportfolio.domain.repository.DataReceivedCallBack;
 
 public class GetPricesFromCoinMarketCap {
     private final CryptoRepository repository;
@@ -8,7 +9,7 @@ public class GetPricesFromCoinMarketCap {
     public GetPricesFromCoinMarketCap(CryptoRepository repository){
         this.repository = repository;
     }
-    public void execute(){
-        repository.getData();
+    public void execute(DataReceivedCallBack callBack){
+        repository.getData(callBack);
     }
 }

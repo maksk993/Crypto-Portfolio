@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.data;
+package com.maksk993.cryptoportfolio.data.models;
 
 public enum CryptoCurrencies {
     BTC, USDT, ETH, BNB, TON, TRX, DOT, NEAR, MATIC, LTC;

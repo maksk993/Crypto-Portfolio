@@ -2,16 +2,15 @@ package com.maksk993.cryptoportfolio.data.repository;
 
 import android.util.Log;
 
-import com.maksk993.cryptoportfolio.data.CoinMarketCapAPI;
-import com.maksk993.cryptoportfolio.data.CryptoCurrencies;
+import com.maksk993.cryptoportfolio.data.models.CoinMarketCapAPI;
+import com.maksk993.cryptoportfolio.data.models.CryptoCurrencies;
+import com.maksk993.cryptoportfolio.domain.repository.DataReceivedCallBack;
 import com.maksk993.cryptoportfolio.domain.repository.CryptoRepository;
-import com.maksk993.cryptoportfolio.presentation.contract.AddAssetContract;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -26,18 +25,14 @@ public class CryptoRepositoryImpl implements CryptoRepository {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     private static final String API_KEY = "API_KEY"; // Insert your key
-    WeakReference<AddAssetContract.AddAssetPresenter> presenter;
 
-    public CryptoRepositoryImpl(AddAssetContract.AddAssetPresenter presenter){
-        this.presenter = new WeakReference<>(presenter);
-    }
-
-    public void getData() {
+    @Override
+    public void getData(DataReceivedCallBack callBack) {
         CoinMarketCapAPI coinMarketCapApi = retrofit.create(CoinMarketCapAPI.class);
 
         for (CryptoCurrencies currency : CryptoCurrencies.values()) {
             int id = currency.getCoinMarketCapId();
-            Call<ResponseBody> call = coinMarketCapApi.getBitcoinPrice(API_KEY, id);
+            Call<ResponseBody> call = coinMarketCapApi.getCurrencyInfo(API_KEY, id);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -47,7 +42,7 @@ public class CryptoRepositoryImpl implements CryptoRepository {
                             JSONObject currencyData = jsonObject.getJSONObject("data").getJSONObject(Integer.toString(id));
                             float price = (float) currencyData.getJSONObject("quote").getJSONObject("USD").getDouble("price");
                             String symbol = currencyData.getString("symbol");
-                            presenter.get().updatePrices(symbol, price);
+                            callBack.dataReceived(symbol, price);
                             // Log.d("PRICES", currencyData.toString());
                         } catch (JSONException | IOException e) {
                             Log.d("PRICES", e.toString());
@@ -63,6 +58,5 @@ public class CryptoRepositoryImpl implements CryptoRepository {
                 }
             });
         }
-
     }
 }

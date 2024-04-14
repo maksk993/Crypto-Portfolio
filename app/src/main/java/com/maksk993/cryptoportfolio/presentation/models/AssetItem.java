@@ -11,6 +11,12 @@ public class AssetItem {
         this.image = image;
     }
 
+    public AssetItem(String name, float price) {
+        this.name = name;
+        this.price = price;
+        this.image = 0;
+    }
+
     public String getName() {
         return name;
     }

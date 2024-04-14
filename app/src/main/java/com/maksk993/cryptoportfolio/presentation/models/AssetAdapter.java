@@ -29,7 +29,15 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull AssetViewHolder holder, int position) {
         holder.assetName.setText(items.get(position).getName());
-        holder.assetPrice.setText(String.valueOf(items.get(position).getPrice() + " $"));
+        if (items.get(position).getPrice() < 1.f) {
+            holder.assetPrice.setText(String.format("%.4f", items.get(position).getPrice()) + " $");
+        }
+        else if (items.get(position).getPrice() < 10.f) {
+            holder.assetPrice.setText(String.format("%.3f", items.get(position).getPrice()) + " $");
+        }
+        else {
+            holder.assetPrice.setText(String.format("%.2f", items.get(position).getPrice()) + " $");
+        }
         holder.assetImage.setImageResource(items.get(position).getImage());
     }
 
