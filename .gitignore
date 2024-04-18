@@ -14,3 +14,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+app/src/main/java/com/maksk993/cryptoportfolio/presentation/view/fragments/PortfolioFragment.java
+app/src/main/java/com/maksk993/cryptoportfolio/presentation/models/FindFragmentById.kt
+app/src/main/java/com/maksk993/cryptoportfolio/data/service

@@ -1,7 +1,7 @@
 package com.maksk993.cryptoportfolio.domain.usecases;
 
 import com.maksk993.cryptoportfolio.domain.repository.CryptoRepository;
-import com.maksk993.cryptoportfolio.domain.repository.DataReceivedCallBack;
+import com.maksk993.cryptoportfolio.domain.models.DataReceivedCallBack;
 
 public class GetPricesFromCoinMarketCap {
     private final CryptoRepository repository;

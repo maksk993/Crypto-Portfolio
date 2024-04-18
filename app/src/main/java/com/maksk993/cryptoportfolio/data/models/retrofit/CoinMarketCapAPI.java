@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.data.models;
+package com.maksk993.cryptoportfolio.data.models.retrofit;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

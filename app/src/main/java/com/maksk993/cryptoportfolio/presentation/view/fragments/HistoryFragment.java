@@ -1,9 +1,8 @@
 package com.maksk993.cryptoportfolio.presentation.view.fragments;
 
-import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
