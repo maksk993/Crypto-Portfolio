@@ -1,10 +1,10 @@
 package com.maksk993.cryptoportfolio.domain.repository
 
 import com.maksk993.cryptoportfolio.domain.models.AssetItem
+import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
 import kotlinx.coroutines.flow.Flow
 
 interface PortfolioRepository {
-    fun findAssetById(id : Long)  : Flow<AssetItem?>
-    suspend fun updateAmount(id : Long, newAmount : Float)
-    suspend fun addNewAsset(asset : AssetItem, amount : Float)
+    suspend fun addAsset(asset : AssetItem, amount : Float)
+    suspend fun getAllAssetsFromPortfolio(): MutableList<PortfolioAssetItem?>
 }

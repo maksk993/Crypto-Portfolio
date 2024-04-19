@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         Database.init(applicationContext)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.startReceivingData()
+        viewModel.getAssetsFromPortfolio()
 
         binding.bottomNavMenu.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener
         {

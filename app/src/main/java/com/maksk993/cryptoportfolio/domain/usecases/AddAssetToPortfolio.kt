@@ -5,6 +5,6 @@ import com.maksk993.cryptoportfolio.domain.models.AssetItem
 
 class AddAssetToPortfolio(private val repository: PortfolioRepository) {
     suspend fun execute(asset : AssetItem, amount : Float){
-        repository.addNewAsset(asset = asset, amount = amount)
+        repository.addAsset(asset = asset, amount = amount)
     }
 }

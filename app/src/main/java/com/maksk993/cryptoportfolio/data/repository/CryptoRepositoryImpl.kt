@@ -21,6 +21,9 @@ class CryptoRepositoryImpl : CryptoRepository {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val API_KEY : String = "API_KEY"
+    companion object {
+        val actualPrices: MutableMap<String, Float> = HashMap()
+    }
 
     override fun getData(callBack : DataReceivedCallBack) {
         val cmcApi : CoinMarketCapAPI = retrofit.create(CoinMarketCapAPI::class.java)
@@ -39,6 +42,7 @@ class CryptoRepositoryImpl : CryptoRepository {
                                 .getDouble("price").toFloat()
                             val symbol = currencyData.getString("symbol")
                             callBack.dataReceived(symbol, price)
+                            actualPrices[symbol] = price
                             // Log.d("PRICES", currencyData.toString());
                         }
                         catch (e: JSONException) {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.maksk993.cryptoportfolio.R
@@ -28,16 +29,19 @@ class IndicateQuantityFragment : Fragment() {
             binding.editTextPrice.setText(it.price.toString())
         }
 
-        binding.btnBackIq.setOnClickListener(){
+        binding.btnBackIq.setOnClickListener{
             viewModel.openFragment(FindFragmentById.ADD_ASSET)
         }
 
-        binding.btnAdd.setOnClickListener(){
+        binding.btnAdd.setOnClickListener{
             try {
                 viewModel.addAssetToPortfolio(binding.editTextAmount.text.toString())
                 viewModel.openFragment(FindFragmentById.PORTFOLIO)
+                Toast.makeText(context, "Asset was added successfully", Toast.LENGTH_SHORT).show()
             }
-            catch (_: Exception){ }
+            catch (_: Exception){
+                Toast.makeText(context, "Enter the amount", Toast.LENGTH_SHORT).show()
+            }
         }
 
         viewModel.shouldNewFragmentBeOpened().observe(viewLifecycleOwner){

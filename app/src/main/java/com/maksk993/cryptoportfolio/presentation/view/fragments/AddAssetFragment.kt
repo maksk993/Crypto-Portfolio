@@ -41,7 +41,12 @@ class AddAssetFragment : Fragment() {
             viewModel.openFragment(FindFragmentById.PORTFOLIO)
         }
 
-        viewModel.getPricesFromCoinMarketCap()
+        viewModel.actualPrices.observe(viewLifecycleOwner){
+            for (i in it){
+                updatePrices(i.key, i.value)
+            }
+        }
+        viewModel.setActualPrices()
         viewModel.shouldNewFragmentBeOpened().observe(viewLifecycleOwner){
             val fragment = FindFragmentById.getFragment(it)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -80,7 +85,7 @@ class AddAssetFragment : Fragment() {
             )
         )
         items.sortWith {
-                a: AssetItem, b: AssetItem ->
+            a: AssetItem, b: AssetItem ->
             a.symbol.compareTo(b.symbol)
         }
         adapter.notifyDataSetChanged()
