@@ -11,6 +11,7 @@ import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.FragmentPortfolioBinding
 import com.maksk993.cryptoportfolio.presentation.models.AssetAdapter
 import com.maksk993.cryptoportfolio.domain.models.AssetItem
+import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
 import kotlin.math.floor
@@ -36,14 +37,26 @@ class PortfolioFragment : Fragment() {
 
         binding.rvPortfolio.setLayoutManager(LinearLayoutManager(requireContext()))
         adapter = AssetAdapter(requireContext(), items)
+        adapter.setOnItemClickListener { position ->
+            viewModel.setFocusedAsset(assetItem = items[position], amount = viewModel.getAmountOf(items[position].symbol))
+            viewModel.openFragment(FindFragmentById.ASSET_MANAGEMENT)
+        }
         binding.rvPortfolio.adapter = adapter
 
         viewModel.assetsInPortfolio.observe(viewLifecycleOwner){
+            if (it.size > 0) binding.tvNoAssets.visibility = View.GONE
+            else binding.tvNoAssets.visibility = View.VISIBLE
             for (i in it){
-                val assetAmountUsd = i!!.amount * i.price
-                updatePortfolioView(i.symbol, assetAmountUsd)
+                updatePortfolioView(i!!)
             }
         }
+
+        viewModel.removedAsset.observe(viewLifecycleOwner){
+            if (!items.contains(it)) {
+                removeAssetAndUpdateView(it)
+            }
+        }
+
         viewModel.shouldNewFragmentBeOpened().observe(viewLifecycleOwner){
             val fragment = FindFragmentById.getFragment(it)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -54,40 +67,39 @@ class PortfolioFragment : Fragment() {
         viewModel.currentBalance.observe(viewLifecycleOwner){
             val balance = floor(it * 100.0) / 100.0
             binding.tvBalance.text = "$balance $"
-            if (it != 0F) binding.tvNoAssets.visibility = View.GONE
         }
 
         return binding.root
     }
 
-    private fun updatePortfolioView(symbol : String, amount : Float){
+    private fun updatePortfolioView(asset : PortfolioAssetItem){
         if (items.isNotEmpty()){
-            for (i in 0 until items.size){
-                if (items[i].symbol == symbol) {
-                    if (amount != items[i].price) {
-                        items[i] =
-                            AssetItem(
-                                symbol,
-                                amount,
-                                R.drawable.ic_history
-                            )
+            for (i in items.indices){
+                if (items[i].symbol == asset.symbol) {
+                    val amountUsd = asset.amount * asset.price
+                    if (amountUsd != items[i].price) {
+                        items[i] = AssetItem(asset.symbol, amountUsd, R.drawable.ic_money)
                         adapter.notifyItemChanged(i)
                     }
                     return
                 }
             }
         }
-        items.add(
-            AssetItem(
-                symbol,
-                amount,
-                R.drawable.ic_history
-            )
-        )
+        items.add(AssetItem(asset.symbol, asset.amount * asset.price, R.drawable.ic_money))
         items.sortWith {
             a: AssetItem, b: AssetItem ->
             a.symbol.compareTo(b.symbol)
         }
         adapter.notifyDataSetChanged()
+    }
+
+    private fun removeAssetAndUpdateView(asset : AssetItem){
+        for (i in items.indices){
+            if (items[i].symbol == asset.symbol) {
+                items.removeAt(i)
+                adapter.notifyItemRemoved(i)
+                return
+            }
+        }
     }
 }

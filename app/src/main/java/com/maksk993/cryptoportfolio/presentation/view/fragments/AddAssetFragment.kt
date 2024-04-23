@@ -32,7 +32,7 @@ class AddAssetFragment : Fragment() {
         binding.recycler.setLayoutManager(LinearLayoutManager(requireContext()))
         adapter = AssetAdapter(requireContext(), items)
         adapter.setOnItemClickListener { position ->
-            viewModel.setAddedAsset(items[position])
+            viewModel.setFocusedAsset(items[position])
             viewModel.openFragment(FindFragmentById.INDICATE_QUANTITY)
         }
         binding.recycler.adapter = adapter
@@ -46,14 +46,14 @@ class AddAssetFragment : Fragment() {
                 updatePrices(i.key, i.value)
             }
         }
-        viewModel.setActualPrices()
+
         viewModel.shouldNewFragmentBeOpened().observe(viewLifecycleOwner){
             val fragment = FindFragmentById.getFragment(it)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.nav_host_fragment, fragment)
             transaction.commit()
         }
-        viewModel.item.observe(viewLifecycleOwner){
+        viewModel.getUpdatingAsset().observe(viewLifecycleOwner){
             updatePrices(it.symbol, it.price)
         }
 
@@ -69,7 +69,7 @@ class AddAssetFragment : Fragment() {
                             AssetItem(
                                 symbol,
                                 price,
-                                R.drawable.ic_history
+                                R.drawable.ic_money
                             )
                         adapter.notifyItemChanged(i)
                     }
@@ -81,7 +81,7 @@ class AddAssetFragment : Fragment() {
             AssetItem(
                 symbol,
                 price,
-                R.drawable.ic_history
+                R.drawable.ic_money
             )
         )
         items.sortWith {

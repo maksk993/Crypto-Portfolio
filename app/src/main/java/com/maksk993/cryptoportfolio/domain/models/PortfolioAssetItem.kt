@@ -1,3 +1,7 @@
 package com.maksk993.cryptoportfolio.domain.models
 
-data class PortfolioAssetItem(val symbol : String, val price : Float, val amount : Float, val image : Int = 0)
+data class PortfolioAssetItem(val symbol : String, val price : Float, var amount : Float = 0F, val image : Int = 0) {
+    fun toAssetItem() : AssetItem {
+        return AssetItem(symbol, price, image)
+    }
+}

@@ -6,4 +6,5 @@
     <color name="first_color">#2D2D2D</color>
     <color name="second_color">#404040</color>
     <color name="add_asset_color">#08BD0F</color>
+    <color name="remove_asset_color">#BD0808</color>
 </resources>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.view.fragments.AssetManagementFragment"
+    tools:ignore="MissingConstraints" >
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="16dp"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="16dp"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/edit_text_amount"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/top_guideline">
+
+        <TextView
+            android:id="@+id/tv_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/sarabun_semibold"
+            android:text="@string/empty" />
+
+        <TextView
+            android:id="@+id/tv_asset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/sarabun_semibold"
+            android:textAllCaps="true"
+            android:text="@string/symbol" />
+
+        <TextView
+            android:id="@+id/tv_usd_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/sarabun_semibold"
+            android:text="@string/empty" />
+
+        <TextView
+            android:id="@+id/tv_usd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/sarabun_semibold"
+            android:textAllCaps="true"
+            android:text="@string/usd" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edit_text_amount"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toTopOf="@id/top_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
+        app:layout_constraintVertical_bias="0.1"
+        android:hint="@string/empty"
+        android:textColorHint="@color/second_color"
+        android:textSize="60sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/sarabun_semibold"
+        />
+
+    <TextView
+        android:id="@+id/tv_sell_buy"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_amount"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        android:text="@string/sell_buy"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:fontFamily="@font/sarabun_semibold"
+        />
+
+    <Button
+        android:id="@+id/btn_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tv_sell_buy"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline"
+        app:layout_constraintTop_toTopOf="@id/tv_sell_buy"
+        app:layout_constraintBottom_toBottomOf="@id/tv_sell_buy"
+        android:text="@string/plus"
+        android:background="@drawable/searchview_bg"
+        android:backgroundTint="@color/add_asset_color"
+        android:textColor="@color/white"
+        style="@style/secondTextColor"
+        android:fontFamily="@font/sarabun_semibold"
+        android:textSize="20sp"
+        />
+
+    <Button
+        android:id="@+id/btn_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/start_guideline"
+        app:layout_constraintEnd_toStartOf="@id/tv_sell_buy"
+        app:layout_constraintTop_toTopOf="@id/tv_sell_buy"
+        app:layout_constraintBottom_toBottomOf="@id/tv_sell_buy"
+        android:text="@string/minus"
+        android:background="@drawable/searchview_bg"
+        android:backgroundTint="@color/remove_asset_color"
+        android:textColor="@color/white"
+        style="@style/secondTextColor"
+        android:fontFamily="@font/sarabun_semibold"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_price_for_coin"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintBottom_toTopOf="@id/edit_text_price"
+        android:text="@string/price_for_coin"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:fontFamily="@font/sarabun_semibold"
+        />
+
+    <EditText
+        android:id="@+id/edit_text_price"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@id/tv_sell_buy"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintBottom_toTopOf="@id/btn_go_to_history"
+        app:layout_constraintVertical_bias="0.5"
+        android:hint="@string/empty"
+        android:textColorHint="@color/second_color"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/sarabun_semibold"
+        />
+
+    <Button
+        android:id="@+id/btn_go_to_history"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.6"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_sell_buy"
+        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@id/start_guideline"
+        app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
+        android:text="@string/go_to_history"
+        android:textAllCaps="true"
+        android:background="@drawable/searchview_bg"
+        android:backgroundTint="@color/second_color"
+        android:textColor="@color/white"
+        style="@style/secondTextColor"
+        android:fontFamily="@font/sarabun_semibold"
+        android:textSize="15sp"
+        />
+
+    <Button
+        android:id="@+id/btn_remove_all"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.6"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_go_to_history"
+        app:layout_constraintStart_toStartOf="@id/btn_go_to_history"
+        app:layout_constraintEnd_toEndOf="@id/btn_go_to_history"
+        android:layout_marginTop="16dp"
+        android:text="@string/remove_from_list"
+        android:textAllCaps="true"
+        android:background="@drawable/searchview_bg"
+        android:backgroundTint="@color/second_color"
+        android:textColor="@color/white"
+        style="@style/secondTextColor"
+        android:fontFamily="@font/sarabun_semibold"
+        android:textSize="15sp"
+        />
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/round_button"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

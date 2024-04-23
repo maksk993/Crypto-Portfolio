@@ -39,7 +39,10 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull AssetViewHolder holder, int position) {
         holder.assetName.setText(items.get(position).getSymbol());
-        if (items.get(position).getPrice() < 1.f) {
+        if (items.get(position).getPrice() < 0.f) {
+            holder.assetPrice.setText("???");
+        }
+        else if (items.get(position).getPrice() < 1.f) {
             holder.assetPrice.setText(String.format("%.4f", items.get(position).getPrice()) + " $");
         }
         else if (items.get(position).getPrice() < 10.f) {

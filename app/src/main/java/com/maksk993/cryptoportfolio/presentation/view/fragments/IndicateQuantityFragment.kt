@@ -24,9 +24,11 @@ class IndicateQuantityFragment : Fragment() {
         binding = FragmentIndicateQuantityBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
-        viewModel.addedAsset.observe(viewLifecycleOwner){
+        viewModel.focusedAsset.observe(viewLifecycleOwner){
             binding.tvAssetName.text = it.symbol
-            binding.editTextPrice.setText(it.price.toString())
+            binding.editTextAmount.setText("")
+            if (it.price < 0F) binding.editTextPrice.setText("?")
+            else binding.editTextPrice.setText(it.price.toString())
         }
 
         binding.btnBackIq.setOnClickListener{

@@ -21,14 +21,14 @@ data class AssetDbEntity(
     val amount : Float
 ) {
     fun toPortfolioItem() : PortfolioAssetItem =
-        PortfolioAssetItem(symbol, CryptoRepositoryImpl.actualPrices[symbol] ?: 0F, amount)
+        PortfolioAssetItem(symbol, CryptoRepositoryImpl.actualPrices[symbol] ?: -1F, amount)
 
     companion object {
-        fun toDbEntity(item : AssetItem, _amount: Float) : AssetDbEntity = AssetDbEntity(
+        fun toDbEntity(item : PortfolioAssetItem) : AssetDbEntity = AssetDbEntity(
             id = 0,
             symbol = item.symbol,
             price = item.price,
-            amount = _amount
+            amount = item.amount
         )
     }
 }

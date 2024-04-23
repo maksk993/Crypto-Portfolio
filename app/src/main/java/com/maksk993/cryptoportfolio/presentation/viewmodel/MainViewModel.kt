@@ -12,6 +12,7 @@ import com.maksk993.cryptoportfolio.domain.usecases.GetPricesFromCoinMarketCap
 import com.maksk993.cryptoportfolio.domain.models.AssetItem
 import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
 import com.maksk993.cryptoportfolio.domain.usecases.GetAssetsFromPortfolio
+import com.maksk993.cryptoportfolio.domain.usecases.RemoveAssetFromPortfolio
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,11 +22,13 @@ import java.util.ArrayList
 class MainViewModel : ViewModel() {
     private val getPrices = GetPricesFromCoinMarketCap(CryptoRepositoryImpl())
     private val addAssetToPortfolio = AddAssetToPortfolio(Database.dbRepository)
+    private val removeAssetFromPortfolio = RemoveAssetFromPortfolio(Database.dbRepository)
     private val getAssetsFromPortfolio = GetAssetsFromPortfolio(Database.dbRepository)
 
     private val nextFragment : MutableLiveData<FindFragmentById> = MutableLiveData()
-    var addedAsset : MutableLiveData<AssetItem> = MutableLiveData()
-    val item : MutableLiveData<AssetItem> = MutableLiveData()
+    var focusedAsset : MutableLiveData<PortfolioAssetItem> = MutableLiveData()
+    var removedAsset : MutableLiveData<AssetItem> = MutableLiveData()
+    private val updatingAsset : MutableLiveData<AssetItem> = MutableLiveData()
     val actualPrices: MutableLiveData<MutableMap<String, Float>> = MutableLiveData(HashMap())
     val assetsInPortfolio : MutableLiveData<MutableList<PortfolioAssetItem?>> = MutableLiveData(ArrayList())
     val currentBalance : MutableLiveData<Float> = MutableLiveData(0F)
@@ -43,11 +46,9 @@ class MainViewModel : ViewModel() {
 
     private fun getPricesFromCoinMarketCap(){
         getPrices.execute { symbol, price ->
-            item.value = AssetItem(
-                symbol,
-                price
-            )
+            updatingAsset.value = AssetItem(symbol, price)
             getAssetsFromPortfolio()
+            setActualPrices()
         }
     }
 
@@ -56,16 +57,16 @@ class MainViewModel : ViewModel() {
             assetsInPortfolio.value = getAssetsFromPortfolio.execute()
             currentBalance.value = assetsInPortfolio.value!!.stream()
                 .mapToDouble{it!!.price.toDouble() * it.amount}
+                .filter { it >= 0F }
                 .sum()
                 .toFloat()
         }
     }
 
-    fun setActualPrices() : LiveData<MutableMap<String, Float>> {
+    private fun setActualPrices() {
         for (i in CryptoRepositoryImpl.actualPrices){
             actualPrices.value!![i.key] = i.value
         }
-        return actualPrices
     }
 
     fun openFragment(id : FindFragmentById){
@@ -76,32 +77,61 @@ class MainViewModel : ViewModel() {
         return nextFragment
     }
 
-    fun getItem() : LiveData<AssetItem> {
-        return item
+    fun getUpdatingAsset() : LiveData<AssetItem> {
+        return updatingAsset
     }
 
-    fun setAddedAsset(assetItem: AssetItem){
-        addedAsset = MutableLiveData(assetItem)
+    fun setFocusedAsset(assetItem: AssetItem, amount : Float = 0F){
+        focusedAsset = MutableLiveData(
+            PortfolioAssetItem(
+                symbol = assetItem.symbol,
+                price = actualPrices.value!![assetItem.symbol]?:-1F,
+                image = assetItem.image,
+                amount = amount)
+        )
     }
 
-    fun getAddedAsset() : LiveData<AssetItem> {
-        return addedAsset
+    fun getFocusedAsset() : LiveData<PortfolioAssetItem> {
+        return focusedAsset
     }
 
     fun addAssetToPortfolio(amountString : String){
         val amount : Float = amountString.toFloat()
         for (i in assetsInPortfolio.value!!){
-            if (i!!.symbol == addedAsset.value!!.symbol) {
+            if (i!!.symbol == focusedAsset.value!!.symbol) {
                 viewModelScope.launch {
-                    addAssetToPortfolio.execute(addedAsset.value!!, amount + i.amount)
+                    if (amount + i.amount <= 0F) {
+                        focusedAsset.value!!.amount = amount
+                        addAssetToPortfolio.execute(focusedAsset.value!!)
+                    }
+                    else {
+                        focusedAsset.value!!.amount = amount + i.amount
+                        addAssetToPortfolio.execute(focusedAsset.value!!)
+                    }
                     getAssetsFromPortfolio()
                 }
                 return
             }
         }
         viewModelScope.launch {
-            addAssetToPortfolio.execute(addedAsset.value!!, amount)
+            focusedAsset.value!!.amount = amount
+            addAssetToPortfolio.execute(focusedAsset.value!!)
             getAssetsFromPortfolio()
         }
+    }
+
+    fun removeAssetFromPortfolio(){
+        viewModelScope.launch {
+            removeAssetFromPortfolio.execute(focusedAsset.value!!.toAssetItem())
+            getAssetsFromPortfolio()
+            removedAsset.value = focusedAsset.value!!.toAssetItem()
+        }
+    }
+
+    fun getAmountOf(symbol : String): Float {
+        for (i in assetsInPortfolio.value!!){
+            if (i!!.symbol == symbol) return i.amount
+        }
+        return 0F
     }
 }

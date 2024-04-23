@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.view.fragments.IndicateQuantityFragment">
+    tools:context=".presentation.view.fragments.IndicateQuantityFragment"
+    tools:ignore="MissingConstraints">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline"
@@ -49,8 +50,7 @@
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
         app:layout_constraintVertical_bias="0.1"
-        tools:ignore="MissingConstraints"
-        android:hint="0.0"
+        android:hint="@string/empty"
         android:textColorHint="@color/second_color"
         android:textSize="60sp"
         android:textColor="@color/white"
@@ -61,11 +61,10 @@
         android:id="@+id/tv_asset_name"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        tools:ignore="MissingConstraints"
         app:layout_constraintTop_toBottomOf="@id/edit_text_amount"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        android:text="symbol"
+        android:text="@string/symbol"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:fontFamily="@font/sarabun_semibold"
@@ -75,12 +74,11 @@
         android:id="@+id/tv_price_for_coin"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        tools:ignore="MissingConstraints"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintBottom_toTopOf="@id/edit_text_price"
-        android:text="price for coin:"
+        android:text="@string/price_for_coin"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:fontFamily="@font/sarabun_semibold"
@@ -97,8 +95,7 @@
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintBottom_toTopOf="@id/btn_add"
         app:layout_constraintVertical_bias="0.5"
-        tools:ignore="MissingConstraints"
-        android:hint="0.0"
+        android:hint="@string/empty"
         android:textColorHint="@color/second_color"
         android:textSize="20sp"
         android:textColor="@color/white"
@@ -114,7 +111,6 @@
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
         app:layout_constraintEnd_toStartOf="@id/end_guideline"
-        tools:ignore="ContentDescription,MissingConstraints"
         />
 
     <Button
@@ -129,13 +125,12 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
         android:layout_marginTop="16dp"
         android:textAllCaps="true"
-        android:text="ADD"
+        android:text="@string/add"
         android:background="@drawable/searchview_bg"
         android:backgroundTint="@color/add_asset_color"
         android:textColor="@color/white"
         style="@style/secondTextColor"
         android:fontFamily="@font/sarabun_semibold"
-        android:textSize="15sp"
-        tools:ignore="MissingConstraints" />
+        android:textSize="15sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
