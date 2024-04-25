@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.FragmentAssetManagementBinding
+import com.maksk993.cryptoportfolio.domain.models.TransactionType
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
 
@@ -41,7 +42,9 @@ class AssetManagementFragment : Fragment() {
 
         binding.btnPlus.setOnClickListener{
             try {
-                viewModel.addAssetToPortfolio(binding.editTextAmount.text.toString())
+                val amount = binding.editTextAmount.text.toString().toFloat()
+                viewModel.addAssetToPortfolio(amount)
+                viewModel.saveTransaction(binding.editTextPrice.text.toString().toFloat(), amount, TransactionType.BUY)
                 viewModel.openFragment(FindFragmentById.PORTFOLIO)
                 Toast.makeText(context, "Asset was added successfully", Toast.LENGTH_SHORT).show()
             }
@@ -56,7 +59,9 @@ class AssetManagementFragment : Fragment() {
                     Toast.makeText(context, "You can't sell more than you have", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    viewModel.addAssetToPortfolio("-${binding.editTextAmount.text}")
+                    val amount = -binding.editTextAmount.text.toString().toFloat()
+                    viewModel.addAssetToPortfolio(amount)
+                    viewModel.saveTransaction(binding.editTextPrice.text.toString().toFloat(), amount, TransactionType.SELL)
                     viewModel.openFragment(FindFragmentById.PORTFOLIO)
                     Toast.makeText(context, "Asset was deleted successfully", Toast.LENGTH_SHORT).show()
                 }
@@ -71,8 +76,13 @@ class AssetManagementFragment : Fragment() {
         }
 
         binding.btnRemoveAll.setOnClickListener{
+            viewModel.saveTransaction(binding.editTextPrice.text.toString().toFloat(), type = TransactionType.SELL)
             viewModel.removeAssetFromPortfolio()
             viewModel.openFragment(FindFragmentById.PORTFOLIO)
+        }
+
+        binding.btnGoToHistory.setOnClickListener{
+
         }
 
         viewModel.shouldNewFragmentBeOpened().observe(viewLifecycleOwner){

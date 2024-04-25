@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "f0d0c47756e2c3783d2c379f27e554c7",
+    "version": 2,
+    "identityHash": "ef780aacef2eec3ad0a98f69c9e3fb10",
     "entities": [
       {
         "tableName": "portfolio_assets",
@@ -54,7 +54,7 @@
       },
       {
         "tableName": "transaction_history",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `symbol` TEXT NOT NULL, `amount` REAL NOT NULL, `transactionPrice` REAL NOT NULL, `type` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `symbol` TEXT NOT NULL COLLATE NOCASE, `transactionPrice` REAL NOT NULL, `type` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -66,12 +66,6 @@
             "fieldPath": "symbol",
             "columnName": "symbol",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "amount",
-            "columnName": "amount",
-            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -100,7 +94,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f0d0c47756e2c3783d2c379f27e554c7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ef780aacef2eec3ad0a98f69c9e3fb10')"
     ]
   }
 }

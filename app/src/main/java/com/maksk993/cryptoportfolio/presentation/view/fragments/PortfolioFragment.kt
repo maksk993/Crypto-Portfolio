@@ -46,6 +46,7 @@ class PortfolioFragment : Fragment() {
         viewModel.assetsInPortfolio.observe(viewLifecycleOwner){
             if (it.size > 0) binding.tvNoAssets.visibility = View.GONE
             else binding.tvNoAssets.visibility = View.VISIBLE
+
             for (i in it){
                 updatePortfolioView(i!!)
             }

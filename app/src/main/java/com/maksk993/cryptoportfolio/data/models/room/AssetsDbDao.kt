@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.maksk993.cryptoportfolio.data.models.room.entities.AssetDbEntity
+import com.maksk993.cryptoportfolio.data.models.room.entities.TransactionDbEntity
 
 @Dao
 interface AssetsDbDao {
@@ -17,4 +18,13 @@ interface AssetsDbDao {
 
     @Query("SELECT * FROM portfolio_assets")
     fun getAllAssetsFromPortfolio() : MutableList<AssetDbEntity?>
+
+    @Insert
+    suspend fun saveTransaction(transactionDbEntity: TransactionDbEntity)
+
+    @Query("SELECT * FROM transaction_history")
+    suspend fun getTransactions() : List<TransactionDbEntity?>
+
+    @Query("SELECT * FROM transaction_history WHERE symbol = :symbol")
+    suspend fun getTransactionsBySymbol(symbol: String) : List<TransactionDbEntity?>
 }

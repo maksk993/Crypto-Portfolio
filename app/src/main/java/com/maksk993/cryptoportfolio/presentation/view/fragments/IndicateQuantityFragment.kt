@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.FragmentIndicateQuantityBinding
+import com.maksk993.cryptoportfolio.domain.models.Transaction
+import com.maksk993.cryptoportfolio.domain.models.TransactionType
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
 
@@ -37,7 +39,9 @@ class IndicateQuantityFragment : Fragment() {
 
         binding.btnAdd.setOnClickListener{
             try {
-                viewModel.addAssetToPortfolio(binding.editTextAmount.text.toString())
+                val amount = binding.editTextAmount.text.toString().toFloat()
+                viewModel.addAssetToPortfolio(amount)
+                viewModel.saveTransaction(binding.editTextPrice.text.toString().toFloat(), amount, TransactionType.BUY)
                 viewModel.openFragment(FindFragmentById.PORTFOLIO)
                 Toast.makeText(context, "Asset was added successfully", Toast.LENGTH_SHORT).show()
             }

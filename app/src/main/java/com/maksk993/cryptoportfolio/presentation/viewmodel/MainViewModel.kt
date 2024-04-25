@@ -11,8 +11,12 @@ import com.maksk993.cryptoportfolio.domain.usecases.AddAssetToPortfolio
 import com.maksk993.cryptoportfolio.domain.usecases.GetPricesFromCoinMarketCap
 import com.maksk993.cryptoportfolio.domain.models.AssetItem
 import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
+import com.maksk993.cryptoportfolio.domain.models.Transaction
+import com.maksk993.cryptoportfolio.domain.models.TransactionType
 import com.maksk993.cryptoportfolio.domain.usecases.GetAssetsFromPortfolio
+import com.maksk993.cryptoportfolio.domain.usecases.GetTransactions
 import com.maksk993.cryptoportfolio.domain.usecases.RemoveAssetFromPortfolio
+import com.maksk993.cryptoportfolio.domain.usecases.SaveTransaction
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,6 +28,9 @@ class MainViewModel : ViewModel() {
     private val addAssetToPortfolio = AddAssetToPortfolio(Database.dbRepository)
     private val removeAssetFromPortfolio = RemoveAssetFromPortfolio(Database.dbRepository)
     private val getAssetsFromPortfolio = GetAssetsFromPortfolio(Database.dbRepository)
+    // HISTORY
+    private val saveTransaction = SaveTransaction(Database.transactionRepository)
+    private val getTransactions = GetTransactions(Database.transactionRepository)
 
     private val nextFragment : MutableLiveData<FindFragmentById> = MutableLiveData()
     var focusedAsset : MutableLiveData<PortfolioAssetItem> = MutableLiveData()
@@ -32,6 +39,8 @@ class MainViewModel : ViewModel() {
     val actualPrices: MutableLiveData<MutableMap<String, Float>> = MutableLiveData(HashMap())
     val assetsInPortfolio : MutableLiveData<MutableList<PortfolioAssetItem?>> = MutableLiveData(ArrayList())
     val currentBalance : MutableLiveData<Float> = MutableLiveData(0F)
+    // HISTORY
+    var transactions : MutableLiveData<MutableList<Transaction?>> = MutableLiveData(ArrayList())
 
     fun startReceivingData(){
         viewModelScope.launch {
@@ -95,8 +104,7 @@ class MainViewModel : ViewModel() {
         return focusedAsset
     }
 
-    fun addAssetToPortfolio(amountString : String){
-        val amount : Float = amountString.toFloat()
+    fun addAssetToPortfolio(amount: Float) {
         for (i in assetsInPortfolio.value!!){
             if (i!!.symbol == focusedAsset.value!!.symbol) {
                 viewModelScope.launch {
@@ -133,5 +141,26 @@ class MainViewModel : ViewModel() {
             if (i!!.symbol == symbol) return i.amount
         }
         return 0F
+    }
+
+    // HISTORY
+    fun getTransactionsFromDb(){
+        viewModelScope.launch {
+            transactions.value = getTransactions.execute().toMutableList()
+        }
+    }
+
+    fun saveTransaction(transactionPrice : Float, amount: Float = focusedAsset.value!!.amount, type : TransactionType){
+        // ???
+        val transaction = Transaction(
+            symbol = focusedAsset.value!!.symbol,
+            amount = amount,
+            transactionPrice = transactionPrice,
+            type = type
+        )
+        transactions.value!!.add(transaction)
+        viewModelScope.launch {
+            saveTransaction.execute(transaction)
+        }
     }
 }
