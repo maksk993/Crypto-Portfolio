@@ -31,44 +31,8 @@ class PortfolioFragment : Fragment() {
         binding = FragmentPortfolioBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
-        binding.btnAddAsset.setOnClickListener(){
-            viewModel.openFragment(FindFragmentById.ADD_ASSET)
-        }
-
-        binding.rvPortfolio.setLayoutManager(LinearLayoutManager(requireContext()))
-        adapter = AssetAdapter(requireContext(), items)
-        adapter.setOnItemClickListener { position ->
-            viewModel.setFocusedAsset(assetItem = items[position], amount = viewModel.getAmountOf(items[position].symbol))
-            viewModel.openFragment(FindFragmentById.ASSET_MANAGEMENT)
-        }
-        binding.rvPortfolio.adapter = adapter
-
-        viewModel.assetsInPortfolio.observe(viewLifecycleOwner){
-            if (it.size > 0) binding.tvNoAssets.visibility = View.GONE
-            else binding.tvNoAssets.visibility = View.VISIBLE
-
-            for (i in it){
-                updatePortfolioView(i!!)
-            }
-        }
-
-        viewModel.removedAsset.observe(viewLifecycleOwner){
-            if (!items.contains(it)) {
-                removeAssetAndUpdateView(it)
-            }
-        }
-
-        viewModel.shouldNewFragmentBeOpened().observe(viewLifecycleOwner){
-            val fragment = FindFragmentById.getFragment(it)
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, fragment)
-            transaction.commit()
-        }
-
-        viewModel.currentBalance.observe(viewLifecycleOwner){
-            val balance = floor(it * 100.0) / 100.0
-            binding.tvBalance.text = "$balance $"
-        }
+        initButtons()
+        initObservers()
 
         return binding.root
     }
@@ -101,6 +65,52 @@ class PortfolioFragment : Fragment() {
                 adapter.notifyItemRemoved(i)
                 return
             }
+        }
+    }
+
+    private fun initObservers(){
+        viewModel.assetsInPortfolio.observe(viewLifecycleOwner){
+            if (it.size > 0) {
+                binding.tvNoAssets.visibility = View.GONE
+                initRecyclerView()
+            }
+            else binding.tvNoAssets.visibility = View.VISIBLE
+
+            for (i in it){
+                updatePortfolioView(i!!)
+            }
+        }
+
+        viewModel.removedAsset.observe(viewLifecycleOwner){
+            removeAssetAndUpdateView(it)
+        }
+
+        viewModel.nextFragment.observe(viewLifecycleOwner){
+            val fragment = FindFragmentById.getFragment(it)
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host_fragment, fragment)
+            transaction.commit()
+        }
+
+        viewModel.currentBalance.observe(viewLifecycleOwner){
+            val balance = floor(it * 100.0) / 100.0
+            binding.tvBalance.text = "$balance $"
+        }
+    }
+
+    private fun initRecyclerView(){
+        binding.rvPortfolio.setLayoutManager(LinearLayoutManager(requireContext()))
+        adapter = AssetAdapter(requireContext(), items)
+        adapter.setOnItemClickListener { position ->
+            viewModel.setFocusedAsset(assetItem = items[position], amount = viewModel.getAmountOf(items[position].symbol))
+            viewModel.openFragment(FindFragmentById.ASSET_MANAGEMENT)
+        }
+        binding.rvPortfolio.adapter = adapter
+    }
+
+    private fun initButtons(){
+        binding.btnAddAsset.setOnClickListener(){
+            viewModel.openFragment(FindFragmentById.ADD_ASSET)
         }
     }
 }

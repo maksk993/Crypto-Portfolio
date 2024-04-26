@@ -14,7 +14,7 @@
 
     <string name="price_for_coin">price for coin:</string>
     <string name="no_assets">No assets added.</string>
-    <string name="no_history">You haven\'t added assets yet.</string>
+    <string name="no_history">Your transaction history will be here.</string>
     <string name="sell_buy">sell/buy</string>
 
     <string name="search_hint">Search assets...</string>

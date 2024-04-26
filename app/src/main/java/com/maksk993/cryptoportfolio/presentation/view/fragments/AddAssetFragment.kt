@@ -29,35 +29,30 @@ class AddAssetFragment : Fragment() {
         binding = FragmentAddAssetBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
-        binding.recycler.setLayoutManager(LinearLayoutManager(requireContext()))
-        adapter = AssetAdapter(requireContext(), items)
-        adapter.setOnItemClickListener { position ->
-            viewModel.setFocusedAsset(items[position])
-            viewModel.openFragment(FindFragmentById.INDICATE_QUANTITY)
-        }
-        binding.recycler.adapter = adapter
+        initRecyclerView()
+        initButtons()
+        initObservers()
 
-        binding.btnBack.setOnClickListener {
-            viewModel.openFragment(FindFragmentById.PORTFOLIO)
-        }
+        return binding.root
+    }
 
+    private fun initObservers(){
         viewModel.actualPrices.observe(viewLifecycleOwner){
             for (i in it){
                 updatePrices(i.key, i.value)
             }
         }
 
-        viewModel.shouldNewFragmentBeOpened().observe(viewLifecycleOwner){
+        viewModel.nextFragment.observe(viewLifecycleOwner){
             val fragment = FindFragmentById.getFragment(it)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.nav_host_fragment, fragment)
             transaction.commit()
         }
-        viewModel.getUpdatingAsset().observe(viewLifecycleOwner){
+
+        viewModel.updatingAsset.observe(viewLifecycleOwner){
             updatePrices(it.symbol, it.price)
         }
-
-        return binding.root
     }
 
     private fun updatePrices(symbol : String, price : Float){
@@ -65,29 +60,34 @@ class AddAssetFragment : Fragment() {
             for (i in 0 until items.size){
                 if (items[i].symbol == symbol) {
                     if (price != items[i].price) {
-                        items[i] =
-                            AssetItem(
-                                symbol,
-                                price,
-                                R.drawable.ic_money
-                            )
+                        items[i] = AssetItem(symbol, price, R.drawable.ic_money)
                         adapter.notifyItemChanged(i)
                     }
                     return
                 }
             }
         }
-        items.add(
-            AssetItem(
-                symbol,
-                price,
-                R.drawable.ic_money
-            )
-        )
+        items.add(AssetItem(symbol, price, R.drawable.ic_money))
         items.sortWith {
             a: AssetItem, b: AssetItem ->
             a.symbol.compareTo(b.symbol)
         }
         adapter.notifyDataSetChanged()
+    }
+
+    private fun initRecyclerView(){
+        binding.recycler.setLayoutManager(LinearLayoutManager(requireContext()))
+        adapter = AssetAdapter(requireContext(), items)
+        adapter.setOnItemClickListener { position ->
+            viewModel.setFocusedAsset(items[position])
+            viewModel.openFragment(FindFragmentById.INDICATE_QUANTITY)
+        }
+        binding.recycler.adapter = adapter
+    }
+
+    private fun initButtons(){
+        binding.btnBack.setOnClickListener {
+            viewModel.openFragment(FindFragmentById.PORTFOLIO)
+        }
     }
 }

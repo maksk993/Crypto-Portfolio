@@ -28,28 +28,37 @@ class HistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
-        binding.rvHistory.layoutManager = LinearLayoutManager(requireContext())
-        adapter = TransactionAdapter(requireContext(), items)
-        binding.rvHistory.adapter = adapter
+        initObservers()
 
+        return binding.root
+    }
+
+    private fun initObservers(){
         viewModel.transactions.observe(viewLifecycleOwner){
-            if (it.size > 0) binding.tvNoHistory.visibility = View.GONE
+            if (it.size > 0) {
+                binding.tvNoHistory.visibility = View.GONE
+                initRecyclerView()
+            }
             else binding.tvNoHistory.visibility = View.VISIBLE
 
             for (i in it){
                 updateHistoryView(i!!)
             }
         }
-        viewModel.getTransactionsFromDb()
-
-        return binding.root
     }
 
     private fun updateHistoryView(transaction: Transaction){
         if (items.contains(transaction)) return
-        items.add(transaction)
-        adapter.notifyItemInserted(items.size - 1)
+        items.add(0, transaction)
+        adapter.notifyItemInserted(0)
+        binding.rvHistory.smoothScrollToPosition(0)
+    }
+
+    private fun initRecyclerView(){
+        binding.rvHistory.layoutManager = LinearLayoutManager(requireContext())
+        adapter = TransactionAdapter(requireContext(), items)
+        binding.rvHistory.adapter = adapter
     }
 }

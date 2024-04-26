@@ -21,11 +21,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        initDependencies()
+        initBottomNavMenu()
+        initObservers()
+    }
+
+    private fun initObservers(){
+        viewModel.nextFragment.observe(this) {
+            val fragment = FindFragmentById.getFragment(it)
+            val transaction = fragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host_fragment, fragment)
+            transaction.commit()
+        }
+    }
+
+    private fun initDependencies() {
         Database.init(applicationContext)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.startReceivingData()
-        viewModel.getAssetsFromPortfolio()
+        viewModel.getAddedAssetsFromDb()
+        viewModel.getTransactionsFromDb()
+    }
 
+    private fun initBottomNavMenu(){
         binding.bottomNavMenu.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener
         {
             val id = it.itemId
@@ -38,12 +57,5 @@ class MainActivity : AppCompatActivity() {
             viewModel.openFragment(fragmentId)
             true
         })
-
-        viewModel.shouldNewFragmentBeOpened().observe(this) {
-            val fragment = FindFragmentById.getFragment(it)
-            val transaction = fragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, fragment)
-            transaction.commit()
-        }
     }
 }
