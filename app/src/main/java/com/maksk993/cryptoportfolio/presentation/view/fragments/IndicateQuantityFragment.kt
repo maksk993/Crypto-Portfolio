@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.FragmentIndicateQuantityBinding
 import com.maksk993.cryptoportfolio.domain.models.TransactionType
+import com.maksk993.cryptoportfolio.presentation.models.Filter
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
 
@@ -48,6 +49,9 @@ class IndicateQuantityFragment : Fragment() {
     }
 
     private fun initButtons() {
+        binding.editTextAmount.filters = arrayOf(Filter.execute())
+        binding.editTextPrice.filters = arrayOf(Filter.execute())
+
         binding.btnBackIq.setOnClickListener{
             viewModel.openFragment(FindFragmentById.ADD_ASSET)
         }

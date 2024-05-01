@@ -41,8 +41,8 @@ class CryptoRepositoryImpl : CryptoRepository {
                             val price = currencyData.getJSONObject("quote").getJSONObject("USD")
                                 .getDouble("price").toFloat()
                             val symbol = currencyData.getString("symbol")
-                            callBack.dataReceived(symbol, price)
                             actualPrices[symbol] = price
+                            callBack.dataReceived(symbol, price)
                             // Log.d("PRICES", currencyData.toString());
                         }
                         catch (e: JSONException) {

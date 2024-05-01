@@ -57,23 +57,23 @@ class MainViewModel : ViewModel() {
     private val _transactions : MutableLiveData<MutableList<Transaction?>> = MutableLiveData(ArrayList())
     val transactions : LiveData<MutableList<Transaction?>> = _transactions
 
+    fun openFragment(id : FindFragmentById){ _nextFragment.value = id }
+
     fun startReceivingData(){
         viewModelScope.launch {
             while(true) {
                 _currentBalance.value = 0F
-                Log.d("PRICES", "Coroutine is started.")
+                Log.d("PRICES", "startReceivingData().")
                 getPricesFromCoinMarketCap()
                 delay(30_000)
             }
         }
     }
 
-    fun openFragment(id : FindFragmentById){ _nextFragment.value = id }
-
     private fun getPricesFromCoinMarketCap(){
         getPrices.execute { symbol, price ->
             _updatingAsset.value = AssetItem(symbol, price)
-            getAddedAssetsFromDb()
+            getAddedAssetsFromDb() // ???
             setActualPrices()
         }
     }
@@ -81,12 +81,16 @@ class MainViewModel : ViewModel() {
     fun getAddedAssetsFromDb() {
         viewModelScope.launch {
             _assetsInPortfolio.value = getAssetsFromPortfolio.execute()
-            _currentBalance.value = _assetsInPortfolio.value!!.stream()
-                .mapToDouble{it!!.price.toDouble() * it.amount}
-                .filter { it >= 0F }
-                .sum()
-                .toFloat()
+            calculateBalance()
         }
+    }
+
+    private fun calculateBalance(){
+        _currentBalance.value = _assetsInPortfolio.value!!.stream()
+            .mapToDouble{it!!.price.toDouble() * it.amount}
+            .filter { it >= 0F }
+            .sum()
+            .toFloat()
     }
 
     private fun setActualPrices() {
@@ -107,14 +111,8 @@ class MainViewModel : ViewModel() {
         for (i in _assetsInPortfolio.value!!){
             if (i!!.symbol == _focusedAsset.value!!.symbol) {
                 viewModelScope.launch {
-                    if (amount + i.amount <= 0F) {
-                        _focusedAsset.value!!.amount = amount
-                        addAssetToPortfolio.execute(_focusedAsset.value!!)
-                    }
-                    else {
-                        _focusedAsset.value!!.amount = amount + i.amount
-                        addAssetToPortfolio.execute(_focusedAsset.value!!)
-                    }
+                    _focusedAsset.value!!.amount = amount + i.amount
+                    addAssetToPortfolio.execute(_focusedAsset.value!!)
                     getAddedAssetsFromDb()
                 }
                 return

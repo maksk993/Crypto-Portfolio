@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.FragmentAssetManagementBinding
 import com.maksk993.cryptoportfolio.domain.models.TransactionType
+import com.maksk993.cryptoportfolio.presentation.models.Filter
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
 
@@ -57,6 +58,9 @@ class AssetManagementFragment : Fragment() {
     }
 
     private fun initButtons(){
+        binding.editTextAmount.filters = arrayOf(Filter.execute())
+        binding.editTextPrice.filters = arrayOf(Filter.execute())
+
         binding.btnPlus.setOnClickListener{
             try {
                 if (binding.editTextPrice.text.toString() == "?") {
