@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.FragmentPortfolioBinding
@@ -14,12 +14,15 @@ import com.maksk993.cryptoportfolio.domain.models.AssetItem
 import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.floor
 
 
+@AndroidEntryPoint
 class PortfolioFragment : Fragment() {
     private lateinit var binding: FragmentPortfolioBinding
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by activityViewModels()
+
     private lateinit var adapter : AssetAdapter
     private val items : MutableList<AssetItem> = ArrayList()
 
@@ -29,7 +32,6 @@ class PortfolioFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPortfolioBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         initButtons()
         initObservers()

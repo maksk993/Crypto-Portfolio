@@ -14,8 +14,7 @@ object Filter {
         else if (dest.toString().contains(".")){
             val dotIndex = dest.toString().indexOf(".")
             if (dest.toString()
-                .substring(dotIndex, dest.toString().length).length
-                > DIGITS_MAX_COUNT_AFTER_DOT)
+                .substring(dotIndex, dest.toString().length).length > DIGITS_MAX_COUNT_AFTER_DOT)
                 return@InputFilter ""
         }
         null

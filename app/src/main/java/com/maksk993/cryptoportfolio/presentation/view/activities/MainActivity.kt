@@ -1,28 +1,33 @@
 package com.maksk993.cryptoportfolio.presentation.view.activities
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.maksk993.cryptoportfolio.R
-import com.maksk993.cryptoportfolio.data.models.room.Database
 import com.maksk993.cryptoportfolio.databinding.ActivityMainBinding
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel : MainViewModel
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var binding : ActivityMainBinding
-    private val fragmentManager : FragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initDependencies()
+        viewModel.apply {
+            startReceivingData()
+            getAddedAssetsFromDb()
+            getTransactionsFromDb()
+        }
+
         initBottomNavMenu()
         initObservers()
     }
@@ -30,18 +35,10 @@ class MainActivity : AppCompatActivity() {
     private fun initObservers(){
         viewModel.nextFragment.observe(this) {
             val fragment = FindFragmentById.getFragment(it)
-            val transaction = fragmentManager.beginTransaction()
+            val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.nav_host_fragment, fragment)
             transaction.commit()
         }
-    }
-
-    private fun initDependencies() {
-        Database.init(applicationContext)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.startReceivingData()
-        viewModel.getAddedAssetsFromDb()
-        viewModel.getTransactionsFromDb()
     }
 
     private fun initBottomNavMenu(){

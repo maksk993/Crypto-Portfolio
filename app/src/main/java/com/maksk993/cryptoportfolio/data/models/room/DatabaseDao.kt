@@ -1,7 +1,6 @@
 package com.maksk993.cryptoportfolio.data.models.room
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -9,7 +8,7 @@ import com.maksk993.cryptoportfolio.data.models.room.entities.AssetDbEntity
 import com.maksk993.cryptoportfolio.data.models.room.entities.TransactionDbEntity
 
 @Dao
-interface AssetsDbDao {
+interface DatabaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addAsset(assetDbEntity: AssetDbEntity)
 

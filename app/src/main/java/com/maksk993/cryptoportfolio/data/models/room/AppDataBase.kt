@@ -13,5 +13,5 @@ import com.maksk993.cryptoportfolio.data.models.room.entities.TransactionDbEntit
     ]
 )
 abstract class AppDataBase : RoomDatabase() {
-    abstract fun getDao() : AssetsDbDao
+    abstract fun getDao() : DatabaseDao
 }

@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maksk993.cryptoportfolio.data.repository.CryptoRepositoryImpl
-import com.maksk993.cryptoportfolio.data.models.room.Database
 import com.maksk993.cryptoportfolio.domain.usecases.AddAssetToPortfolio
 import com.maksk993.cryptoportfolio.domain.usecases.GetPricesFromCoinMarketCap
 import com.maksk993.cryptoportfolio.domain.models.AssetItem
@@ -18,19 +17,22 @@ import com.maksk993.cryptoportfolio.domain.usecases.GetTransactions
 import com.maksk993.cryptoportfolio.domain.usecases.RemoveAssetFromPortfolio
 import com.maksk993.cryptoportfolio.domain.usecases.SaveTransaction
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.ArrayList
+import javax.inject.Inject
 
 
-class MainViewModel : ViewModel() {
-    private val getPrices = GetPricesFromCoinMarketCap(CryptoRepositoryImpl())
-    private val addAssetToPortfolio = AddAssetToPortfolio(Database.dbRepository)
-    private val removeAssetFromPortfolio = RemoveAssetFromPortfolio(Database.dbRepository)
-    private val getAssetsFromPortfolio = GetAssetsFromPortfolio(Database.dbRepository)
-    // HISTORY
-    private val saveTransaction = SaveTransaction(Database.transactionRepository)
-    private val getTransactions = GetTransactions(Database.transactionRepository)
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val getPrices: GetPricesFromCoinMarketCap,
+    private val addAssetToPortfolio: AddAssetToPortfolio,
+    private val removeAssetFromPortfolio: RemoveAssetFromPortfolio,
+    private val getAssetsFromPortfolio: GetAssetsFromPortfolio,
+    private val saveTransaction: SaveTransaction,
+    private val getTransactions: GetTransactions
+) : ViewModel() {
 
     private val _nextFragment : MutableLiveData<FindFragmentById> = MutableLiveData()
     val nextFragment : LiveData<FindFragmentById> = _nextFragment
