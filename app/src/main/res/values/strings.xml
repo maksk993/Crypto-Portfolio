@@ -11,6 +11,7 @@
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="usd">USD</string>
+    <string name="night_mode">Night mode</string>
 
     <string name="price_for_coin">price for coin:</string>
     <string name="no_assets">No assets added.</string>

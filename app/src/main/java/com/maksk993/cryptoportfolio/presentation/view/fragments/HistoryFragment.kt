@@ -11,9 +11,8 @@ import com.maksk993.cryptoportfolio.databinding.FragmentHistoryBinding
 import com.maksk993.cryptoportfolio.domain.models.Transaction
 import com.maksk993.cryptoportfolio.presentation.models.TransactionAdapter
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class HistoryFragment : Fragment() {
     private val viewModel : MainViewModel by activityViewModels()
     private lateinit var binding : FragmentHistoryBinding

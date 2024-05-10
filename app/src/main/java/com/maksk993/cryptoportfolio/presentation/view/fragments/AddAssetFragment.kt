@@ -13,10 +13,8 @@ import com.maksk993.cryptoportfolio.presentation.models.AssetAdapter
 import com.maksk993.cryptoportfolio.domain.models.AssetItem
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
 
-@AndroidEntryPoint
 class AddAssetFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var binding: FragmentAddAssetBinding

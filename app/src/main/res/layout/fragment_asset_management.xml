@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="20sp"
-            android:textColor="@color/white"
+            style="@style/firstTextColor"
             android:fontFamily="@font/sarabun_semibold"
             android:text="@string/empty" />
 
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="20sp"
-            android:textColor="@color/white"
+            style="@style/firstTextColor"
             android:fontFamily="@font/sarabun_semibold"
             android:textAllCaps="true"
             android:text="@string/symbol" />
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="20sp"
-            android:textColor="@color/white"
+            style="@style/firstTextColor"
             android:fontFamily="@font/sarabun_semibold"
             android:text="@string/empty" />
 
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="20sp"
-            android:textColor="@color/white"
+            style="@style/firstTextColor"
             android:fontFamily="@font/sarabun_semibold"
             android:textAllCaps="true"
             android:text="@string/usd" />
@@ -106,7 +106,7 @@
         android:hint="@string/empty"
         android:textColorHint="@color/second_color"
         android:textSize="60sp"
-        android:textColor="@color/white"
+        style="@style/firstTextColor"
         android:fontFamily="@font/sarabun_semibold"
         />
 
@@ -118,7 +118,7 @@
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         android:text="@string/sell_buy"
-        android:textColor="@color/white"
+        style="@style/firstTextColor"
         android:textSize="25sp"
         android:fontFamily="@font/sarabun_semibold"
         />
@@ -166,7 +166,7 @@
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintBottom_toTopOf="@id/edit_text_price"
         android:text="@string/price_for_coin"
-        android:textColor="@color/white"
+        style="@style/firstTextColor"
         android:textSize="20sp"
         android:fontFamily="@font/sarabun_semibold"
         />
@@ -185,7 +185,7 @@
         android:hint="@string/empty"
         android:textColorHint="@color/second_color"
         android:textSize="20sp"
-        android:textColor="@color/white"
+        style="@style/firstTextColor"
         android:fontFamily="@font/sarabun_semibold"
         />
 

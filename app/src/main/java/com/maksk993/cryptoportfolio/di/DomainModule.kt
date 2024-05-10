@@ -2,13 +2,16 @@ package com.maksk993.cryptoportfolio.di
 
 import com.maksk993.cryptoportfolio.domain.repository.CryptoRepository
 import com.maksk993.cryptoportfolio.domain.repository.PortfolioRepository
+import com.maksk993.cryptoportfolio.domain.repository.ThemeRepository
 import com.maksk993.cryptoportfolio.domain.repository.TransactionRepository
 import com.maksk993.cryptoportfolio.domain.usecases.AddAssetToPortfolio
 import com.maksk993.cryptoportfolio.domain.usecases.GetAssetsFromPortfolio
 import com.maksk993.cryptoportfolio.domain.usecases.GetPricesFromCoinMarketCap
+import com.maksk993.cryptoportfolio.domain.usecases.GetSavedAppTheme
 import com.maksk993.cryptoportfolio.domain.usecases.GetTransactions
 import com.maksk993.cryptoportfolio.domain.usecases.RemoveAssetFromPortfolio
 import com.maksk993.cryptoportfolio.domain.usecases.SaveTransaction
+import com.maksk993.cryptoportfolio.domain.usecases.SwitchAppTheme
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,5 +49,15 @@ class DomainModule {
     @Provides
     fun provideGetTransactions(transactionRepository: TransactionRepository): GetTransactions{
         return GetTransactions(transactionRepository)
+    }
+
+    @Provides
+    fun provideGetSavedAppTheme(themeRepository: ThemeRepository): GetSavedAppTheme {
+        return GetSavedAppTheme(themeRepository)
+    }
+
+    @Provides
+    fun provideSwitchTheme(themeRepository: ThemeRepository): SwitchAppTheme {
+        return SwitchAppTheme(themeRepository)
     }
 }

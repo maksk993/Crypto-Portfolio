@@ -14,11 +14,9 @@ import com.maksk993.cryptoportfolio.domain.models.AssetItem
 import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.floor
 
 
-@AndroidEntryPoint
 class PortfolioFragment : Fragment() {
     private lateinit var binding: FragmentPortfolioBinding
     private val viewModel: MainViewModel by activityViewModels()

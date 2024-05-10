@@ -13,9 +13,11 @@ import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
 import com.maksk993.cryptoportfolio.domain.models.Transaction
 import com.maksk993.cryptoportfolio.domain.models.TransactionType
 import com.maksk993.cryptoportfolio.domain.usecases.GetAssetsFromPortfolio
+import com.maksk993.cryptoportfolio.domain.usecases.GetSavedAppTheme
 import com.maksk993.cryptoportfolio.domain.usecases.GetTransactions
 import com.maksk993.cryptoportfolio.domain.usecases.RemoveAssetFromPortfolio
 import com.maksk993.cryptoportfolio.domain.usecases.SaveTransaction
+import com.maksk993.cryptoportfolio.domain.usecases.SwitchAppTheme
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -31,7 +33,9 @@ class MainViewModel @Inject constructor(
     private val removeAssetFromPortfolio: RemoveAssetFromPortfolio,
     private val getAssetsFromPortfolio: GetAssetsFromPortfolio,
     private val saveTransaction: SaveTransaction,
-    private val getTransactions: GetTransactions
+    private val getTransactions: GetTransactions,
+    private val getTheme: GetSavedAppTheme,
+    private val switchAppTheme: SwitchAppTheme
 ) : ViewModel() {
 
     private val _nextFragment : MutableLiveData<FindFragmentById> = MutableLiveData()
@@ -58,6 +62,10 @@ class MainViewModel @Inject constructor(
     // HISTORY
     private val _transactions : MutableLiveData<MutableList<Transaction?>> = MutableLiveData(ArrayList())
     val transactions : LiveData<MutableList<Transaction?>> = _transactions
+
+    // SETTINGS
+    private val _nightMode: MutableLiveData<Boolean> = MutableLiveData(false)
+    val nightMode: LiveData<Boolean> = _nightMode
 
     fun openFragment(id : FindFragmentById){ _nextFragment.value = id }
 
@@ -161,4 +169,17 @@ class MainViewModel @Inject constructor(
             saveTransaction.execute(transaction)
         }
     }
+
+    // SETTINGS
+    fun switchTheme(){
+        _nightMode.value = _nightMode.value != true
+    }
+
+    fun setSavedAppTheme(){
+        _nightMode.value = isSavedAppThemeNight()
+    }
+
+    private fun isSavedAppThemeNight(): Boolean = getTheme.execute()
+
+    fun setNightTheme(state: Boolean) = switchAppTheme.execute(state)
 }

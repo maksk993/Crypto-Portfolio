@@ -4,9 +4,11 @@ import android.content.Context
 import com.maksk993.cryptoportfolio.data.models.room.Database
 import com.maksk993.cryptoportfolio.data.repository.CryptoRepositoryImpl
 import com.maksk993.cryptoportfolio.data.repository.PortfolioRepositoryImpl
+import com.maksk993.cryptoportfolio.data.repository.ThemeRepositoryImpl
 import com.maksk993.cryptoportfolio.data.repository.TransactionRepositoryImpl
 import com.maksk993.cryptoportfolio.domain.repository.CryptoRepository
 import com.maksk993.cryptoportfolio.domain.repository.PortfolioRepository
+import com.maksk993.cryptoportfolio.domain.repository.ThemeRepository
 import com.maksk993.cryptoportfolio.domain.repository.TransactionRepository
 import dagger.Module
 import dagger.Provides
@@ -41,5 +43,11 @@ class DataModule {
     @Singleton
     fun provideTransactionRepository(database: Database): TransactionRepository {
         return TransactionRepositoryImpl(database.getDao())
+    }
+
+    @Provides
+    @Singleton
+    fun provideThemeRepository(@ApplicationContext context: Context): ThemeRepository{
+        return ThemeRepositoryImpl(context)
     }
 }

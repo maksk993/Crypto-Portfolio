@@ -13,10 +13,8 @@ import com.maksk993.cryptoportfolio.domain.models.TransactionType
 import com.maksk993.cryptoportfolio.presentation.models.Filter
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
 
-@AndroidEntryPoint
 class AssetManagementFragment : Fragment() {
     private lateinit var binding : FragmentAssetManagementBinding
     private val viewModel: MainViewModel by activityViewModels()

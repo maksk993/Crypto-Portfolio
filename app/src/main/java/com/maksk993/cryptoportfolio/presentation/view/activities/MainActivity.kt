@@ -3,7 +3,7 @@ package com.maksk993.cryptoportfolio.presentation.view.activities
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.ActivityMainBinding
@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             startReceivingData()
             getAddedAssetsFromDb()
             getTransactionsFromDb()
+            setSavedAppTheme()
         }
 
         initBottomNavMenu()
@@ -38,6 +39,20 @@ class MainActivity : AppCompatActivity() {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.nav_host_fragment, fragment)
             transaction.commit()
+        }
+
+        viewModel.nightMode.observe(this){
+            var isNightMode = false
+            if (it == true){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                binding.btnChangeAcc.setImageResource(R.drawable.ic_arrow_down)
+                isNightMode = true
+            }
+            else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                binding.btnChangeAcc.setImageResource(R.drawable.ic_arrow_down_night)
+            }
+            viewModel.setNightTheme(isNightMode)
         }
     }
 
