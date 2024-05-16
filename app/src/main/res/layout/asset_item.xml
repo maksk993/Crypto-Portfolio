@@ -28,7 +28,7 @@
         android:textColor="@color/white"
         android:textSize="22sp"
         android:fontFamily="@font/sarabun_semibold"
-        android:text="NEAR"
+        android:text=""
         />
 
     <TextView
@@ -41,7 +41,7 @@
         android:textColor="@color/white"
         android:textSize="22sp"
         android:fontFamily="@font/sarabun_semibold"
-        android:text="7.23 $"
+        android:text=""
         />
 
 </LinearLayout>

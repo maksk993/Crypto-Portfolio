@@ -12,6 +12,7 @@
     <string name="minus">-</string>
     <string name="usd">USD</string>
     <string name="night_mode">Night mode</string>
+    <string name="main_portfolio">Main Portfolio</string>
 
     <string name="price_for_coin">price for coin:</string>
     <string name="no_assets">No assets added.</string>
@@ -21,4 +22,6 @@
     <string name="search_hint">Search assets...</string>
     <string name="symbol">symbol</string>
     <string name="empty">0.0</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

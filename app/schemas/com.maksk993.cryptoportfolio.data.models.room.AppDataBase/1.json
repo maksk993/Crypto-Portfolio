@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f0d0c47756e2c3783d2c379f27e554c7",
+    "identityHash": "511337d93aa455baba7f3564edd851ed",
     "entities": [
       {
         "tableName": "portfolio_assets",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `symbol` TEXT NOT NULL COLLATE NOCASE, `price` REAL NOT NULL, `amount` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `symbol` TEXT NOT NULL COLLATE NOCASE, `price` REAL NOT NULL, `amount` REAL NOT NULL, `accountName` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -31,6 +31,12 @@
             "columnName": "amount",
             "affinity": "REAL",
             "notNull": true
+          },
+          {
+            "fieldPath": "accountName",
+            "columnName": "accountName",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -41,20 +47,21 @@
         },
         "indices": [
           {
-            "name": "index_portfolio_assets_symbol",
+            "name": "index_portfolio_assets_symbol_accountName",
             "unique": true,
             "columnNames": [
-              "symbol"
+              "symbol",
+              "accountName"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_portfolio_assets_symbol` ON `${TABLE_NAME}` (`symbol`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_portfolio_assets_symbol_accountName` ON `${TABLE_NAME}` (`symbol`, `accountName`)"
           }
         ],
         "foreignKeys": []
       },
       {
         "tableName": "transaction_history",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `symbol` TEXT NOT NULL, `amount` REAL NOT NULL, `transactionPrice` REAL NOT NULL, `type` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `symbol` TEXT NOT NULL, `amount` REAL NOT NULL, `transactionPrice` REAL NOT NULL, `type` TEXT NOT NULL, `accountName` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -85,6 +92,12 @@
             "columnName": "type",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "accountName",
+            "columnName": "accountName",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -95,12 +108,48 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "accounts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_accounts_name",
+            "unique": true,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_accounts_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f0d0c47756e2c3783d2c379f27e554c7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '511337d93aa455baba7f3564edd851ed')"
     ]
   }
 }

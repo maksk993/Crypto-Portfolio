@@ -23,13 +23,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel.apply {
+            setSavedAppTheme()
+            getLastAccountName()
             startReceivingData()
             getAddedAssetsFromDb()
             getTransactionsFromDb()
-            setSavedAppTheme()
+            getAccountsFromDb()
         }
 
-        initBottomNavMenu()
+        initViews()
         initObservers()
     }
 
@@ -54,9 +56,21 @@ class MainActivity : AppCompatActivity() {
             }
             viewModel.setNightTheme(isNightMode)
         }
+
+        viewModel.currentAccount.observe(this){
+            binding.portfolioName.text = it.name
+            viewModel.apply {
+                createFragment(FindFragmentById.PORTFOLIO, FindFragmentById.HISTORY)
+                openFragment(FindFragmentById.PORTFOLIO)
+                getAddedAssetsFromDb()
+                getTransactionsFromDb()
+                getAccountsFromDb()
+                setSavedAppTheme()
+            }
+        }
     }
 
-    private fun initBottomNavMenu(){
+    private fun initViews(){
         binding.bottomNavMenu.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener
         {
             val id = it.itemId
@@ -69,5 +83,9 @@ class MainActivity : AppCompatActivity() {
             viewModel.openFragment(fragmentId)
             true
         })
+
+        binding.btnChangeAcc.setOnClickListener{
+            viewModel.openFragment(FindFragmentById.ACCOUNT_MANAGEMENT)
+        }
     }
 }

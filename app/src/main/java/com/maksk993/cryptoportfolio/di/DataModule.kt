@@ -2,10 +2,12 @@ package com.maksk993.cryptoportfolio.di
 
 import android.content.Context
 import com.maksk993.cryptoportfolio.data.models.room.Database
+import com.maksk993.cryptoportfolio.data.repository.AccountRepositoryImpl
 import com.maksk993.cryptoportfolio.data.repository.CryptoRepositoryImpl
 import com.maksk993.cryptoportfolio.data.repository.PortfolioRepositoryImpl
 import com.maksk993.cryptoportfolio.data.repository.ThemeRepositoryImpl
 import com.maksk993.cryptoportfolio.data.repository.TransactionRepositoryImpl
+import com.maksk993.cryptoportfolio.domain.repository.AccountRepository
 import com.maksk993.cryptoportfolio.domain.repository.CryptoRepository
 import com.maksk993.cryptoportfolio.domain.repository.PortfolioRepository
 import com.maksk993.cryptoportfolio.domain.repository.ThemeRepository
@@ -49,5 +51,11 @@ class DataModule {
     @Singleton
     fun provideThemeRepository(@ApplicationContext context: Context): ThemeRepository{
         return ThemeRepositoryImpl(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccountRepository(database: Database): AccountRepository {
+        return AccountRepositoryImpl(database.getDao(), database.context)
     }
 }

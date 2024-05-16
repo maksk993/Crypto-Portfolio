@@ -43,13 +43,6 @@ class AddAssetFragment : Fragment() {
             }
         }
 
-        viewModel.nextFragment.observe(viewLifecycleOwner){
-            val fragment = FindFragmentById.getFragment(it)
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, fragment)
-            transaction.commit()
-        }
-
         viewModel.updatingAsset.observe(viewLifecycleOwner){
             updatePrices(it.symbol, it.price)
         }

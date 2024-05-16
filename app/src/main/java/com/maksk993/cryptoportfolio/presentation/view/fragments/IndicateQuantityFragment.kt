@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.FragmentIndicateQuantityBinding
 import com.maksk993.cryptoportfolio.domain.models.TransactionType
 import com.maksk993.cryptoportfolio.presentation.models.Filter
@@ -38,13 +37,6 @@ class IndicateQuantityFragment : Fragment() {
             binding.editTextAmount.setText("")
             if (it.price < 0F) binding.editTextPrice.setText("?")
             else binding.editTextPrice.setText(it.price.toString())
-        }
-
-        viewModel.nextFragment.observe(viewLifecycleOwner){
-            val fragment = FindFragmentById.getFragment(it)
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, fragment)
-            transaction.commit()
         }
     }
 

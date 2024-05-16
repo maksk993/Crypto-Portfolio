@@ -34,11 +34,11 @@
          />
 
       <TextView
-          android:id="@+id/wallet_name"
+          android:id="@+id/portfolio_name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:fontFamily="@font/sarabun_semibold"
-          android:text="Portfolio 1"
+          android:text="@string/main_portfolio"
           android:gravity="center"
           style="@style/firstTextColor"
           android:textSize="25sp"

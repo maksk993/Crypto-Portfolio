@@ -13,9 +13,7 @@ class TransactionAdapter(val context: Context, private var items : List<Transact
         return AssetViewHolder(LayoutInflater.from(context).inflate(R.layout.asset_item, parent, false))
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: AssetViewHolder, position: Int) {
         holder.assetName.text = items[position].symbol

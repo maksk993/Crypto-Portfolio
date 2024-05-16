@@ -85,13 +85,6 @@ class PortfolioFragment : Fragment() {
             removeAssetAndUpdateView(it)
         }
 
-        viewModel.nextFragment.observe(viewLifecycleOwner){
-            val fragment = FindFragmentById.getFragment(it)
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, fragment)
-            transaction.commit()
-        }
-
         viewModel.currentBalance.observe(viewLifecycleOwner){
             val balance = floor(it * 100.0) / 100.0
             binding.tvBalance.text = "$balance $"
