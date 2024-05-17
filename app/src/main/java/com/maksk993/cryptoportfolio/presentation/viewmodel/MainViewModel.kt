@@ -215,8 +215,8 @@ class MainViewModel @Inject constructor(
         }
         viewModelScope.launch {
             addAccount.execute(account = account)
+            getAccountsFromDb()
         }
-        getAccountsFromDb()
         return true
     }
 

@@ -28,7 +28,7 @@ interface DatabaseDao {
     @Query("SELECT * FROM transaction_history WHERE symbol = :symbol AND accountName = :accountName")
     suspend fun getTransactionsBySymbol(symbol: String, accountName: String) : List<TransactionDbEntity?>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     suspend fun addAccount(accountDbEntity: AccountDbEntity)
 
     @Query("SELECT * FROM accounts")

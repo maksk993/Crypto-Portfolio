@@ -21,7 +21,7 @@ enum class FindFragmentById(val id : Int) {
     ACCOUNT_MANAGEMENT(6);
 
     companion object {
-        init {
+        fun init(){
             fragmentMap[PORTFOLIO] = PortfolioFragment()
             fragmentMap[HISTORY] = HistoryFragment()
             fragmentMap[SETTINGS] = SettingsFragment()

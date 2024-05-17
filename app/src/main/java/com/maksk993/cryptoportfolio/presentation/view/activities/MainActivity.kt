@@ -32,8 +32,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         initViews()
+        initFragments()
         initObservers()
     }
+
+    private fun initFragments() = FindFragmentById.init()
 
     private fun initObservers(){
         viewModel.nextFragment.observe(this) {
@@ -60,12 +63,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.currentAccount.observe(this){
             binding.portfolioName.text = it.name
             viewModel.apply {
-                createFragment(FindFragmentById.PORTFOLIO, FindFragmentById.HISTORY)
-                openFragment(FindFragmentById.PORTFOLIO)
                 getAddedAssetsFromDb()
                 getTransactionsFromDb()
                 getAccountsFromDb()
                 setSavedAppTheme()
+                createFragment(FindFragmentById.PORTFOLIO, FindFragmentById.HISTORY)
+                openFragment(FindFragmentById.PORTFOLIO)
             }
         }
     }
@@ -85,7 +88,17 @@ class MainActivity : AppCompatActivity() {
         })
 
         binding.btnChangeAcc.setOnClickListener{
-            viewModel.openFragment(FindFragmentById.ACCOUNT_MANAGEMENT)
+            if (viewModel.nextFragment.value == FindFragmentById.ACCOUNT_MANAGEMENT)
+                viewModel.openFragment(FindFragmentById.PORTFOLIO)
+            else
+                viewModel.openFragment(FindFragmentById.ACCOUNT_MANAGEMENT)
         }
+    }
+
+    override fun onBackPressed() {
+        if (viewModel.nextFragment.value != FindFragmentById.PORTFOLIO)
+            viewModel.openFragment(FindFragmentById.PORTFOLIO)
+        else
+            super.onBackPressed()
     }
 }

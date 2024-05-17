@@ -6,12 +6,12 @@ enum class CryptoCurrencies(val coinMarketCapId : Int) {
     ETH(1027),
     BNB(1839),
     TON(11419),
-    TRX(1958),
+    /*TRX(1958),
     DOT(6636),
     NEAR(6535),
     MATIC(3890),
     LTC(2),
     SOL(5426),
     ADA(2010),
-    XRP(52);
+    XRP(52);*/
 }
