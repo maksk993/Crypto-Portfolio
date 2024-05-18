@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.apply {
             setSavedAppTheme()
             getLastAccountName()
-            startReceivingData()
             getAddedAssetsFromDb()
             getTransactionsFromDb()
             getAccountsFromDb()
+            startReceivingData()
         }
 
         initViews()
@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                 setSavedAppTheme()
                 createFragment(FindFragmentById.PORTFOLIO, FindFragmentById.HISTORY)
                 openFragment(FindFragmentById.PORTFOLIO)
+                calculateBalance()
             }
         }
     }

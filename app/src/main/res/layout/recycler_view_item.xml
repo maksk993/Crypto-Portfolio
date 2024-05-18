@@ -11,7 +11,7 @@
     >
 
     <ImageView
-        android:id="@+id/img_asset_image"
+        android:id="@+id/img_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -19,7 +19,7 @@
         />
 
     <TextView
-        android:id="@+id/tv_asset_name"
+        android:id="@+id/tv_left_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.7"
@@ -32,7 +32,7 @@
         />
 
     <TextView
-        android:id="@+id/tv_asset_price"
+        android:id="@+id/tv_right_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"

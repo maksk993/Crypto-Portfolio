@@ -1,11 +1,10 @@
 package com.maksk993.cryptoportfolio.domain.repository
 
 import com.maksk993.cryptoportfolio.domain.models.Account
-import com.maksk993.cryptoportfolio.domain.models.AssetItem
-import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
+import com.maksk993.cryptoportfolio.domain.models.Asset
 
 interface PortfolioRepository {
-    suspend fun addAsset(asset : PortfolioAssetItem)
-    suspend fun removeAsset(asset : AssetItem, account: Account)
-    suspend fun getAllAssetsFromPortfolio(account: Account): MutableList<PortfolioAssetItem?>
+    suspend fun addAsset(asset : Asset)
+    suspend fun removeAsset(asset : Asset, account: Account)
+    suspend fun getAllAssetsFromPortfolio(account: Account): List<Asset?>
 }

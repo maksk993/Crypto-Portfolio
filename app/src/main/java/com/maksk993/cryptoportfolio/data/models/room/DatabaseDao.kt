@@ -17,7 +17,7 @@ interface DatabaseDao {
     suspend fun removeAsset(symbol : String, accountName: String)
 
     @Query("SELECT * FROM portfolio_assets WHERE accountName = :accountName")
-    fun getAllAssetsFromPortfolio(accountName: String) : MutableList<AssetDbEntity?>
+    fun getAllAssetsFromPortfolio(accountName: String) : List<AssetDbEntity?>
 
     @Insert
     suspend fun saveTransaction(transactionDbEntity: TransactionDbEntity)

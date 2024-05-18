@@ -5,12 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.maksk993.cryptoportfolio.data.repository.CryptoRepositoryImpl
 import com.maksk993.cryptoportfolio.domain.models.Account
 import com.maksk993.cryptoportfolio.domain.usecases.AddAssetToPortfolio
 import com.maksk993.cryptoportfolio.domain.usecases.GetPricesFromCoinMarketCap
-import com.maksk993.cryptoportfolio.domain.models.AssetItem
-import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
+import com.maksk993.cryptoportfolio.domain.models.Asset
 import com.maksk993.cryptoportfolio.domain.models.Transaction
 import com.maksk993.cryptoportfolio.domain.models.TransactionType
 import com.maksk993.cryptoportfolio.domain.usecases.AddAccount
@@ -52,20 +50,17 @@ class MainViewModel @Inject constructor(
     private val _nextFragment : MutableLiveData<FindFragmentById> = MutableLiveData()
     val nextFragment : LiveData<FindFragmentById> = _nextFragment
 
-    private val _focusedAsset : MutableLiveData<PortfolioAssetItem> = MutableLiveData()
-    val focusedAsset: LiveData<PortfolioAssetItem> = _focusedAsset
+    private val _focusedAsset : MutableLiveData<Asset> = MutableLiveData()
+    val focusedAsset: LiveData<Asset> = _focusedAsset
 
-    private val _removedAsset : MutableLiveData<AssetItem> = MutableLiveData()
-    val removedAsset: LiveData<AssetItem> = _removedAsset
-
-    private val _updatingAsset : MutableLiveData<AssetItem> = MutableLiveData()
-    val updatingAsset : LiveData<AssetItem> = _updatingAsset
+    private val _removedAsset : MutableLiveData<Asset> = MutableLiveData()
+    val removedAsset: LiveData<Asset> = _removedAsset
 
     private val _actualPrices: MutableLiveData<MutableMap<String, Float>> = MutableLiveData(HashMap())
     val actualPrices: LiveData<MutableMap<String, Float>> = _actualPrices
 
-    private val _assetsInPortfolio : MutableLiveData<MutableList<PortfolioAssetItem?>> = MutableLiveData(ArrayList())
-    val assetsInPortfolio : LiveData<MutableList<PortfolioAssetItem?>> = _assetsInPortfolio
+    private val _assetsInPortfolio : MutableLiveData<MutableList<Asset?>> = MutableLiveData(ArrayList())
+    val assetsInPortfolio : LiveData<MutableList<Asset?>> = _assetsInPortfolio
 
     private val _currentBalance : MutableLiveData<Float> = MutableLiveData(0F)
     val currentBalance : LiveData<Float> = _currentBalance
@@ -103,39 +98,41 @@ class MainViewModel @Inject constructor(
 
     private fun getPricesFromCoinMarketCap(){
         getPrices.execute { symbol, price ->
-            _updatingAsset.value = AssetItem(symbol, price)
-            getAddedAssetsFromDb() // ???
-            setActualPrices()
+            val actualPricesMap = _actualPrices.value ?: mutableMapOf()
+            actualPricesMap[symbol] = price
+            for (i in _assetsInPortfolio.value!!){
+                if (i!!.symbol == symbol) i.price = price
+            }
+            _actualPrices.value = actualPricesMap
+            calculateBalance()
         }
     }
 
     fun getAddedAssetsFromDb() {
         viewModelScope.launch {
-            _assetsInPortfolio.value = getAssetsFromPortfolio.execute(_currentAccount.value!!)
+            val assetList = getAssetsFromPortfolio.execute(_currentAccount.value!!)
+            for (i in assetList){
+                i!!.price = _actualPrices.value!![i.symbol] ?: -1F
+            }
+            _assetsInPortfolio.value = assetList.toMutableList()
             calculateBalance()
         }
     }
 
-    private fun calculateBalance(){
+    fun calculateBalance(){
         _currentBalance.value = _assetsInPortfolio.value!!.stream()
-            .mapToDouble{it!!.price.toDouble() * it.amount}
+            .mapToDouble{ it!!.price.toDouble() * it.amount }
             .filter { it >= 0F }
             .sum()
             .toFloat()
     }
 
-    private fun setActualPrices() {
-        for (i in CryptoRepositoryImpl.actualPrices){
-            _actualPrices.value!![i.key] = i.value
-        }
-    }
-
-    fun setFocusedAsset(assetItem: AssetItem, amount : Float = 0F){
-        _focusedAsset.value = PortfolioAssetItem(
-            symbol = assetItem.symbol,
-            price = _actualPrices.value!![assetItem.symbol]?:-1F,
-            image = assetItem.image,
-            amount = amount,
+    fun setFocusedAsset(asset: Asset){
+        _focusedAsset.value = Asset(
+            symbol = asset.symbol,
+            price = _actualPrices.value!![asset.symbol]?:-1F,
+            image = asset.image,
+            amount = asset.amount,
             account = _currentAccount.value!!)
     }
 
@@ -159,17 +156,10 @@ class MainViewModel @Inject constructor(
 
     fun removeAssetFromPortfolio(){
         viewModelScope.launch {
-            removeAssetFromPortfolio.execute(_focusedAsset.value!!.toAssetItem(), _currentAccount.value!!)
+            removeAssetFromPortfolio.execute(_focusedAsset.value!!, _currentAccount.value!!)
             getAddedAssetsFromDb()
-            _removedAsset.value = _focusedAsset.value!!.toAssetItem()
+            _removedAsset.value = _focusedAsset.value!!
         }
-    }
-
-    fun getAmountOf(symbol : String): Float {
-        for (i in _assetsInPortfolio.value!!){
-            if (i!!.symbol == symbol) return i.amount
-        }
-        return 0F
     }
 
     // HISTORY

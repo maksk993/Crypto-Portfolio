@@ -4,10 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.maksk993.cryptoportfolio.data.repository.CryptoRepositoryImpl
 import com.maksk993.cryptoportfolio.domain.models.Account
-import com.maksk993.cryptoportfolio.domain.models.AssetItem
-import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
+import com.maksk993.cryptoportfolio.domain.models.Asset
 
 @Entity(
     tableName = "portfolio_assets",
@@ -16,25 +14,22 @@ import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
 data class AssetDbEntity(
     @PrimaryKey(autoGenerate = true) val id : Long,
     @ColumnInfo(collate = ColumnInfo.NOCASE) val symbol : String,
-    val price : Float,
     val amount : Float,
     val accountName: String
 ) {
-    fun toPortfolioItem() : PortfolioAssetItem =
-        PortfolioAssetItem(
+    fun toPortfolioItem() : Asset =
+        Asset(
             symbol = symbol,
-            price = CryptoRepositoryImpl.actualPrices[symbol] ?: -1F,
             amount = amount,
             account = Account(accountName)
         )
 
     companion object {
-        fun toDbEntity(item : PortfolioAssetItem) : AssetDbEntity = AssetDbEntity(
+        fun toDbEntity(item : Asset) : AssetDbEntity = AssetDbEntity(
             id = 0,
             symbol = item.symbol,
-            price = item.price,
             amount = item.amount,
-            accountName = item.account.name
+            accountName = item.account?.name ?: ""
         )
     }
 }

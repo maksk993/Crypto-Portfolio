@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.FragmentAddAssetBinding
 import com.maksk993.cryptoportfolio.presentation.models.AssetAdapter
-import com.maksk993.cryptoportfolio.domain.models.AssetItem
+import com.maksk993.cryptoportfolio.domain.models.Asset
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
 
@@ -20,7 +20,7 @@ class AddAssetFragment : Fragment() {
     private lateinit var binding: FragmentAddAssetBinding
 
     private lateinit var adapter : AssetAdapter
-    private val items : MutableList<AssetItem> = ArrayList()
+    private val items : MutableList<Asset> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,10 +42,6 @@ class AddAssetFragment : Fragment() {
                 updatePrices(i.key, i.value)
             }
         }
-
-        viewModel.updatingAsset.observe(viewLifecycleOwner){
-            updatePrices(it.symbol, it.price)
-        }
     }
 
     private fun updatePrices(symbol : String, price : Float){
@@ -53,16 +49,16 @@ class AddAssetFragment : Fragment() {
             for (i in 0 until items.size){
                 if (items[i].symbol == symbol) {
                     if (price != items[i].price) {
-                        items[i] = AssetItem(symbol, price, R.drawable.ic_money)
+                        items[i] = Asset(symbol, price, image = R.drawable.ic_money)
                         adapter.notifyItemChanged(i)
                     }
                     return
                 }
             }
         }
-        items.add(AssetItem(symbol, price, R.drawable.ic_money))
+        items.add(Asset(symbol, price, image = R.drawable.ic_money))
         items.sortWith {
-            a: AssetItem, b: AssetItem ->
+                a: Asset, b: Asset ->
             a.symbol.compareTo(b.symbol)
         }
         adapter.notifyDataSetChanged()

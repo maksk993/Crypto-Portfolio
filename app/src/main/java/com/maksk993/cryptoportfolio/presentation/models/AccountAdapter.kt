@@ -8,7 +8,7 @@ import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.domain.models.Account
 
 
-class AccountAdapter(val context: Context, private var items : List<Account>): RecyclerView.Adapter<AssetViewHolder>() {
+class AccountAdapter(val context: Context, private var items : List<Account>): RecyclerView.Adapter<MyViewHolder>() {
     private lateinit var listener: OnItemClickListener
 
     interface OnItemClickListener {
@@ -19,14 +19,16 @@ class AccountAdapter(val context: Context, private var items : List<Account>): R
         this.listener = listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AssetViewHolder {
-        return AssetViewHolder(LayoutInflater.from(context).inflate(R.layout.asset_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        return MyViewHolder(
+            LayoutInflater.from(context).inflate(R.layout.recycler_view_item, parent, false)
+        )
     }
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: AssetViewHolder, position: Int) {
-        holder.assetName.text = items[position].name
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.leftName.text = items[position].name
         holder.itemView.setOnClickListener{
             listener.onItemClick(position)
         }

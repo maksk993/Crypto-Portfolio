@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.FragmentPortfolioBinding
 import com.maksk993.cryptoportfolio.presentation.models.AssetAdapter
-import com.maksk993.cryptoportfolio.domain.models.AssetItem
-import com.maksk993.cryptoportfolio.domain.models.PortfolioAssetItem
+import com.maksk993.cryptoportfolio.domain.models.Asset
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
 import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
 import kotlin.math.floor
@@ -22,7 +21,7 @@ class PortfolioFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
 
     private lateinit var adapter : AssetAdapter
-    private val items : MutableList<AssetItem> = ArrayList()
+    private val items : MutableList<Asset> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,28 +36,28 @@ class PortfolioFragment : Fragment() {
         return binding.root
     }
 
-    private fun updatePortfolioView(asset : PortfolioAssetItem){
+    private fun updatePortfolioView(asset : Asset){
         if (items.isNotEmpty()){
             for (i in items.indices){
                 if (items[i].symbol == asset.symbol) {
                     val amountUsd = asset.amount * asset.price
                     if (amountUsd != items[i].price) {
-                        items[i] = AssetItem(asset.symbol, amountUsd, R.drawable.ic_money)
+                        items[i] = Asset(asset.symbol, amountUsd, asset.amount, image = R.drawable.ic_money)
                         adapter.notifyItemChanged(i)
                     }
                     return
                 }
             }
         }
-        items.add(AssetItem(asset.symbol, asset.amount * asset.price, R.drawable.ic_money))
+        items.add(Asset(asset.symbol, asset.amount * asset.price, asset.amount, image = R.drawable.ic_money))
         items.sortWith {
-            a: AssetItem, b: AssetItem ->
+                a: Asset, b: Asset ->
             a.symbol.compareTo(b.symbol)
         }
         adapter.notifyDataSetChanged()
     }
 
-    private fun removeAssetAndUpdateView(asset : AssetItem){
+    private fun removeAssetAndUpdateView(asset : Asset){
         for (i in items.indices){
             if (items[i].symbol == asset.symbol) {
                 items.removeAt(i)
@@ -81,6 +80,13 @@ class PortfolioFragment : Fragment() {
             }
         }
 
+        viewModel.actualPrices.observe(viewLifecycleOwner){
+            for (i in it) {
+                val asset = viewModel.assetsInPortfolio.value!!.find { item -> item!!.symbol == i.key}
+                asset?.let { updatePortfolioView(asset) }
+            }
+        }
+
         viewModel.removedAsset.observe(viewLifecycleOwner){
             removeAssetAndUpdateView(it)
         }
@@ -95,7 +101,7 @@ class PortfolioFragment : Fragment() {
         binding.rvPortfolio.setLayoutManager(LinearLayoutManager(requireContext()))
         adapter = AssetAdapter(requireContext(), items)
         adapter.setOnItemClickListener { position ->
-            viewModel.setFocusedAsset(assetItem = items[position], amount = viewModel.getAmountOf(items[position].symbol))
+            viewModel.setFocusedAsset(asset = items[position])
             viewModel.openFragment(FindFragmentById.ASSET_MANAGEMENT)
         }
         binding.rvPortfolio.adapter = adapter

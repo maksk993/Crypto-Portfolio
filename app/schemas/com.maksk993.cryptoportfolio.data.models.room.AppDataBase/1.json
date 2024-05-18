@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "511337d93aa455baba7f3564edd851ed",
+    "identityHash": "87985498624419993c2b5d1cde10bd19",
     "entities": [
       {
         "tableName": "portfolio_assets",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `symbol` TEXT NOT NULL COLLATE NOCASE, `price` REAL NOT NULL, `amount` REAL NOT NULL, `accountName` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `symbol` TEXT NOT NULL COLLATE NOCASE, `amount` REAL NOT NULL, `accountName` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -18,12 +18,6 @@
             "fieldPath": "symbol",
             "columnName": "symbol",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "price",
-            "columnName": "price",
-            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -149,7 +143,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '511337d93aa455baba7f3564edd851ed')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '87985498624419993c2b5d1cde10bd19')"
     ]
   }
 }
