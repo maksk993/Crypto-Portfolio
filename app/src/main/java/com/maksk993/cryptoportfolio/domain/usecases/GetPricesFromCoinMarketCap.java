@@ -10,6 +10,6 @@ public class GetPricesFromCoinMarketCap {
         this.repository = repository;
     }
     public void execute(DataReceivedCallBack callBack){
-        repository.getData(callBack);
+        repository.getPrices(callBack);
     }
 }

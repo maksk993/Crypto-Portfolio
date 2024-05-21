@@ -6,7 +6,13 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
 
+const val SORT_BY = "market_cap"
+const val LIMIT = 50
+
 interface CryptoServiceAPI {
-    @GET("v1/cryptocurrency/quotes/latest")
-    fun getCurrencyInfo(@Header("X-CMC_PRO_API_KEY") apiKey: String, @Query("id") id: Int): Call<ResponseBody>
+    @GET("v1/cryptocurrency/listings/latest")
+    fun getPrices(@Header("X-CMC_PRO_API_KEY") apiKey: String,
+                  @Query("sort") sortBy: String = SORT_BY,
+                  @Query("limit") min: Int = LIMIT
+    ): Call<ResponseBody>
 }
