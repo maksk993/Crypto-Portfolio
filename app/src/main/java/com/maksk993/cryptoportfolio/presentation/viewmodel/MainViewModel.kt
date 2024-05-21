@@ -26,6 +26,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.ArrayList
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -223,5 +224,13 @@ class MainViewModel @Inject constructor(
 
     fun getLastAccountName() {
         _currentAccount.value = getLastAccount.execute()
+    }
+
+    fun getAssetsBySearch(query: String): List<Asset> {
+        val list = mutableListOf<Asset>()
+        for (i in actualPrices.value ?: return list){
+            if (i.key.startsWith(query.uppercase())) list.add(Asset(symbol = i.key, price = i.value))
+        }
+        return list
     }
 }

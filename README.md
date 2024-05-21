@@ -1,1 +1,1 @@
-To get current pricing information insert API key into API_KEY in data/repository/CryptoRepositoryImpl
+Crypto portfolio tracking app

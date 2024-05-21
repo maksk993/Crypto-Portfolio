@@ -51,7 +51,7 @@ class PortfolioFragment : Fragment() {
         }
         items.add(Asset(asset.symbol, asset.amount * asset.price, asset.amount, image = R.drawable.ic_money))
         items.sortWith {
-                a: Asset, b: Asset ->
+            a: Asset, b: Asset ->
             a.symbol.compareTo(b.symbol)
         }
         adapter.notifyDataSetChanged()

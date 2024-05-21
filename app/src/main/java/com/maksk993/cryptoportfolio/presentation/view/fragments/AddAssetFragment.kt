@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,10 +31,28 @@ class AddAssetFragment : Fragment() {
         binding = FragmentAddAssetBinding.inflate(inflater, container, false)
 
         initRecyclerView()
+        initSearchView()
         initButtons()
         initObservers()
 
         return binding.root
+    }
+
+    private fun initSearchView() {
+        binding.svSearchAssets.setOnQueryTextListener(object : OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                var list = listOf<Asset>()
+                query?.let { list = viewModel.getAssetsBySearch(query) }
+                items.clear()
+                binding.recycler.adapter?.notifyDataSetChanged()
+                for (i in list) {
+                    updatePrices(i.symbol, i.price)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean = onQueryTextSubmit(newText)
+        })
     }
 
     private fun initObservers(){

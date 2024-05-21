@@ -1,8 +1,9 @@
 package com.maksk993.cryptoportfolio.data.repository
 
 import android.util.Log
-import com.maksk993.cryptoportfolio.data.models.retrofit.CoinMarketCapAPI
+import com.maksk993.cryptoportfolio.BuildConfig
 import com.maksk993.cryptoportfolio.data.models.retrofit.CryptoCurrencies
+import com.maksk993.cryptoportfolio.data.models.retrofit.CryptoServiceAPI
 import com.maksk993.cryptoportfolio.domain.models.DataReceivedCallBack
 import com.maksk993.cryptoportfolio.domain.repository.CryptoRepository
 import okhttp3.ResponseBody
@@ -20,13 +21,13 @@ class CryptoRepositoryImpl : CryptoRepository {
         .baseUrl("https://pro-api.coinmarketcap.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    private val API_KEY : String = "API_KEY"
+    private val API_KEY : String = BuildConfig.API_KEY
     companion object {
         val actualPrices: MutableMap<String, Float> = HashMap()
     }
 
     override fun getData(callBack : DataReceivedCallBack) {
-        val cmcApi : CoinMarketCapAPI = retrofit.create(CoinMarketCapAPI::class.java)
+        val cmcApi : CryptoServiceAPI = retrofit.create(CryptoServiceAPI::class.java)
 
         for (currency in CryptoCurrencies.entries){
             val id = currency.coinMarketCapId
