@@ -12,7 +12,6 @@ class TransactionRepositoryImpl(private val dao : DatabaseDao) : TransactionRepo
     }
 
     override suspend fun getTransactions(symbol : String, account: Account): List<Transaction?> {
-        // TO DO
         return dao.getTransactionsBySymbol(symbol, account.name).map { it?.toTransaction() }
     }
 

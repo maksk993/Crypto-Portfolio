@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.presentation.view.fragments
+package com.maksk993.cryptoportfolio.presentation.screens.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +9,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.FragmentPortfolioBinding
-import com.maksk993.cryptoportfolio.presentation.models.AssetAdapter
+import com.maksk993.cryptoportfolio.presentation.models.recyclerview.AssetAdapter
 import com.maksk993.cryptoportfolio.domain.models.Asset
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
-import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
+import com.maksk993.cryptoportfolio.presentation.screens.main.MainViewModel
 import kotlin.math.floor
 
 
@@ -76,13 +76,13 @@ class PortfolioFragment : Fragment() {
             else binding.tvNoAssets.visibility = View.VISIBLE
 
             for (i in it){
-                updatePortfolioView(i!!)
+                i?.let { updatePortfolioView(i) }
             }
         }
 
         viewModel.actualPrices.observe(viewLifecycleOwner){
             for (i in it) {
-                val asset = viewModel.assetsInPortfolio.value!!.find { item -> item!!.symbol == i.key}
+                val asset = viewModel.assetsInPortfolio.value?.find { item -> item?.symbol == i.key}
                 asset?.let { updatePortfolioView(asset) }
             }
         }
@@ -108,7 +108,7 @@ class PortfolioFragment : Fragment() {
     }
 
     private fun initButtons(){
-        binding.btnAddAsset.setOnClickListener(){
+        binding.btnAddAsset.setOnClickListener{
             viewModel.openFragment(FindFragmentById.ADD_ASSET)
         }
     }

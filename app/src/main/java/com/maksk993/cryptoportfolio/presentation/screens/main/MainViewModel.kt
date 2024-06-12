@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.presentation.viewmodel
+package com.maksk993.cryptoportfolio.presentation.screens.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -26,7 +26,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.ArrayList
-import java.util.Locale
 import javax.inject.Inject
 
 
@@ -101,8 +100,8 @@ class MainViewModel @Inject constructor(
         getPrices.execute { symbol, price ->
             val actualPricesMap = _actualPrices.value ?: mutableMapOf()
             actualPricesMap[symbol] = price
-            for (i in _assetsInPortfolio.value!!){
-                if (i!!.symbol == symbol) i.price = price
+            for (i in _assetsInPortfolio.value ?: return@execute){
+                if (i?.symbol == symbol) i?.price = price
             }
             _actualPrices.value = actualPricesMap
             calculateBalance()
@@ -111,9 +110,9 @@ class MainViewModel @Inject constructor(
 
     fun getAddedAssetsFromDb() {
         viewModelScope.launch {
-            val assetList = getAssetsFromPortfolio.execute(_currentAccount.value!!)
+            val assetList = getAssetsFromPortfolio.execute(_currentAccount.value ?: return@launch)
             for (i in assetList){
-                i!!.price = _actualPrices.value!![i.symbol] ?: -1F
+                i?.price = _actualPrices.value?.get(i?.symbol) ?: -1F
             }
             _assetsInPortfolio.value = assetList.toMutableList()
             calculateBalance()
@@ -121,64 +120,78 @@ class MainViewModel @Inject constructor(
     }
 
     fun calculateBalance(){
-        _currentBalance.value = _assetsInPortfolio.value!!.stream()
-            .mapToDouble{ it!!.price.toDouble() * it.amount }
-            .filter { it >= 0F }
-            .sum()
-            .toFloat()
+        _assetsInPortfolio.value?.let { assetsInPortfolioValue ->
+            _currentBalance.value = assetsInPortfolioValue.stream()
+                .mapToDouble{ asset ->
+                    asset?.let {
+                        (asset.price.toDouble()) * asset.amount
+                    } ?: 0.0
+                }
+                .filter { it >= 0F }
+                .sum()
+                .toFloat()
+        }
     }
 
     fun setFocusedAsset(asset: Asset){
         _focusedAsset.value = Asset(
             symbol = asset.symbol,
-            price = _actualPrices.value!![asset.symbol]?:-1F,
+            price = _actualPrices.value?.get(asset.symbol) ?: -1F,
             image = asset.image,
             amount = asset.amount,
-            account = _currentAccount.value!!)
+            account = _currentAccount.value ?: return
+        )
     }
 
     fun addAssetToPortfolio(amount: Float) {
-        for (i in _assetsInPortfolio.value!!){
-            if (i!!.symbol == _focusedAsset.value!!.symbol) {
+        for (i in _assetsInPortfolio.value ?: return){
+            if (i != null && i.symbol == _focusedAsset.value?.symbol) {
                 viewModelScope.launch {
-                    _focusedAsset.value!!.amount = amount + i.amount
-                    addAssetToPortfolio.execute(_focusedAsset.value!!)
-                    getAddedAssetsFromDb()
+                    _focusedAsset.value?.let { focusedAssetValue ->
+                        focusedAssetValue.amount = amount + i.amount
+                        addAssetToPortfolio.execute(focusedAssetValue)
+                        getAddedAssetsFromDb()
+                    }
                 }
                 return
             }
         }
         viewModelScope.launch {
-            _focusedAsset.value!!.amount = amount
-            addAssetToPortfolio.execute(_focusedAsset.value!!)
+            _focusedAsset.value?.amount = amount
+            addAssetToPortfolio.execute(_focusedAsset.value ?: return@launch)
             getAddedAssetsFromDb()
         }
     }
 
     fun removeAssetFromPortfolio(){
         viewModelScope.launch {
-            removeAssetFromPortfolio.execute(_focusedAsset.value!!, _currentAccount.value!!)
+            removeAssetFromPortfolio.execute(
+                _focusedAsset.value ?: return@launch,
+                _currentAccount.value ?: return@launch
+            )
             getAddedAssetsFromDb()
-            _removedAsset.value = _focusedAsset.value!!
+            _removedAsset.value = _focusedAsset.value ?: return@launch
         }
     }
 
     // HISTORY
     fun getTransactionsFromDb(){
         viewModelScope.launch {
-            _transactions.value = getTransactions.execute(_currentAccount.value!!).toMutableList()
+            _currentAccount.value?.let {
+                _transactions.value = getTransactions.execute(it).toMutableList()
+            }
         }
     }
 
     fun saveTransaction(transactionPrice : Float, amount: Float = -_focusedAsset.value!!.amount, type : TransactionType){
         val transaction = Transaction(
-            symbol = _focusedAsset.value!!.symbol,
+            symbol = _focusedAsset.value?.symbol ?: return,
             amount = amount,
             transactionPrice = transactionPrice,
             type = type,
-            account = _currentAccount.value!!
+            account = _currentAccount.value ?: return
         )
-        _transactions.value!!.add(transaction)
+        _transactions.value?.add(transaction)
         viewModelScope.launch {
             saveTransaction.execute(transaction)
         }
@@ -233,4 +246,5 @@ class MainViewModel @Inject constructor(
         }
         return list
     }
+    
 }

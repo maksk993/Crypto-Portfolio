@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.presentation.view.fragments
+package com.maksk993.cryptoportfolio.presentation.screens.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.maksk993.cryptoportfolio.databinding.FragmentHistoryBinding
 import com.maksk993.cryptoportfolio.domain.models.Transaction
-import com.maksk993.cryptoportfolio.presentation.models.TransactionAdapter
-import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
+import com.maksk993.cryptoportfolio.presentation.models.recyclerview.TransactionAdapter
+import com.maksk993.cryptoportfolio.presentation.screens.main.MainViewModel
 
 
 class HistoryFragment : Fragment() {
@@ -41,7 +41,7 @@ class HistoryFragment : Fragment() {
             else binding.tvNoHistory.visibility = View.VISIBLE
 
             for (i in it){
-                updateHistoryView(i!!)
+                i?.let { updateHistoryView(i) }
             }
         }
     }

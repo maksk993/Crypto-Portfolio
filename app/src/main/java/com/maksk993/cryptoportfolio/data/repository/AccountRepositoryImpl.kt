@@ -25,7 +25,7 @@ class AccountRepositoryImpl(private val dao : DatabaseDao, private val context: 
 
     override fun getLastAccount(): Account {
         val name = sharedPreferences.getString(lastAccountKey, "Main Portfolio")
-        return Account(name!!)
+        return Account(name ?: "Main Portfolio")
     }
 
     override fun saveLastAccount(account: Account) {

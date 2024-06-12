@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.presentation.view.activities
+package com.maksk993.cryptoportfolio.presentation.screens.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -8,7 +8,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.maksk993.cryptoportfolio.R
 import com.maksk993.cryptoportfolio.databinding.ActivityMainBinding
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
-import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 

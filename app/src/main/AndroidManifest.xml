@@ -16,7 +16,7 @@
         android:theme="@style/Theme.CryptoPortfolio"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.view.activities.MainActivity"
+            android:name=".presentation.screens.main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

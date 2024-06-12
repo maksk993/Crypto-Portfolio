@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.presentation.view.fragments
+package com.maksk993.cryptoportfolio.presentation.screens.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.maksk993.cryptoportfolio.databinding.FragmentSettingsBinding
-import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
+import com.maksk993.cryptoportfolio.presentation.screens.main.MainViewModel
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding

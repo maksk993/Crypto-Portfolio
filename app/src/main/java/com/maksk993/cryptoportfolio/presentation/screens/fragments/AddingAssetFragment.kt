@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.presentation.view.fragments
+package com.maksk993.cryptoportfolio.presentation.screens.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.maksk993.cryptoportfolio.databinding.FragmentIndicateQuantityBinding
+import com.maksk993.cryptoportfolio.databinding.FragmentAddingAssetBinding
 import com.maksk993.cryptoportfolio.domain.models.TransactionType
 import com.maksk993.cryptoportfolio.presentation.models.Filter
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
-import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
+import com.maksk993.cryptoportfolio.presentation.screens.main.MainViewModel
 
 
-class IndicateQuantityFragment : Fragment() {
-    private lateinit var binding: FragmentIndicateQuantityBinding
+class AddingAssetFragment : Fragment() {
+    private lateinit var binding: FragmentAddingAssetBinding
     private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -23,7 +23,7 @@ class IndicateQuantityFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentIndicateQuantityBinding.inflate(inflater, container, false)
+        binding = FragmentAddingAssetBinding.inflate(inflater, container, false)
 
         initButtons()
         initObservers()

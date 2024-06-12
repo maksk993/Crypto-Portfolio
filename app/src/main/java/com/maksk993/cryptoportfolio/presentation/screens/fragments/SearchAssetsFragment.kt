@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.presentation.view.fragments
+package com.maksk993.cryptoportfolio.presentation.screens.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,16 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.maksk993.cryptoportfolio.R
-import com.maksk993.cryptoportfolio.databinding.FragmentAddAssetBinding
-import com.maksk993.cryptoportfolio.presentation.models.AssetAdapter
+import com.maksk993.cryptoportfolio.databinding.FragmentSearchAssetsBinding
+import com.maksk993.cryptoportfolio.presentation.models.recyclerview.AssetAdapter
 import com.maksk993.cryptoportfolio.domain.models.Asset
 import com.maksk993.cryptoportfolio.presentation.models.FindFragmentById
-import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
+import com.maksk993.cryptoportfolio.presentation.screens.main.MainViewModel
 
 
-class AddAssetFragment : Fragment() {
+class SearchAssetsFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var binding: FragmentAddAssetBinding
+    private lateinit var binding: FragmentSearchAssetsBinding
 
     private lateinit var adapter : AssetAdapter
     private val items : MutableList<Asset> = ArrayList()
@@ -28,7 +28,7 @@ class AddAssetFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAddAssetBinding.inflate(inflater, container, false)
+        binding = FragmentSearchAssetsBinding.inflate(inflater, container, false)
 
         initRecyclerView()
         initSearchView()

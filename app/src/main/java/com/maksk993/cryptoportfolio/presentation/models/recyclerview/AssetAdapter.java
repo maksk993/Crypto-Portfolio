@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.presentation.models;
+package com.maksk993.cryptoportfolio.presentation.models.recyclerview;
 
 import android.content.Context;
 import android.view.LayoutInflater;

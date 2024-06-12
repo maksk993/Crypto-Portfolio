@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/fragment_history"
-        android:name="com.maksk993.cryptoportfolio.presentation.view.fragments.HistoryFragment"
+        android:name="com.maksk993.cryptoportfolio.presentation.screens.fragments.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
     <fragment
         android:id="@+id/fragment_portfolio"
-        android:name="com.maksk993.cryptoportfolio.presentation.view.fragments.PortfolioFragment"
+        android:name="com.maksk993.cryptoportfolio.presentation.screens.fragments.PortfolioFragment"
         android:label="fragment_balance"
         tools:layout="@layout/fragment_portfolio" />
     <fragment
         android:id="@+id/fragment_settings"
-        android:name="com.maksk993.cryptoportfolio.presentation.view.fragments.SettingsFragment"
+        android:name="com.maksk993.cryptoportfolio.presentation.screens.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

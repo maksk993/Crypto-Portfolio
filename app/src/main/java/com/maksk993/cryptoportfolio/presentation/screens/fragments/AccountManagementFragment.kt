@@ -1,4 +1,4 @@
-package com.maksk993.cryptoportfolio.presentation.view.fragments
+package com.maksk993.cryptoportfolio.presentation.screens.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -12,8 +12,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.maksk993.cryptoportfolio.databinding.FragmentAccountManagementBinding
 import com.maksk993.cryptoportfolio.domain.models.Account
-import com.maksk993.cryptoportfolio.presentation.models.AccountAdapter
-import com.maksk993.cryptoportfolio.presentation.viewmodel.MainViewModel
+import com.maksk993.cryptoportfolio.presentation.models.recyclerview.AccountAdapter
+import com.maksk993.cryptoportfolio.presentation.screens.main.MainViewModel
 
 
 class AccountManagementFragment : Fragment() {
@@ -40,7 +40,7 @@ class AccountManagementFragment : Fragment() {
     private fun initObservers() {
         viewModel.accounts.observe(viewLifecycleOwner){
             for (i in it){
-                addAccount(i!!)
+                i?.let { addAccount(i) }
             }
         }
     }
