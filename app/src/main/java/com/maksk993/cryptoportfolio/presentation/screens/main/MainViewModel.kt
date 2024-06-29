@@ -97,14 +97,16 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getPricesFromCoinMarketCap(){
-        getPrices.execute { symbol, price ->
-            val actualPricesMap = _actualPrices.value ?: mutableMapOf()
-            actualPricesMap[symbol] = price
-            for (i in _assetsInPortfolio.value ?: return@execute){
-                if (i?.symbol == symbol) i?.price = price
+        viewModelScope.launch {
+            getPrices.execute().collect { asset ->
+                val actualPricesMap = _actualPrices.value ?: mutableMapOf()
+                actualPricesMap[asset.symbol] = asset.price
+                for (i in _assetsInPortfolio.value ?: return@collect){
+                    if (i?.symbol == asset.symbol) i.price = asset.price
+                }
+                _actualPrices.value = actualPricesMap
+                calculateBalance()
             }
-            _actualPrices.value = actualPricesMap
-            calculateBalance()
         }
     }
 
